@@ -1,0 +1,453 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07CB1B9C79D8F6CBEC360080 /* NowPlayingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E218EB4B21292603EFA73CB1 /* NowPlayingViewModel.swift */; };
+		22CFAD141CD71B4BD73A3151 /* LyricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170869D726E6A1154DFDDC42 /* LyricsService.swift */; };
+		256A211103B6771172FB3C15 /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 19D7E86AE263724A37EB540B /* MediaRemoteAdapter */; };
+		2D075BF34B2F279F120FD543 /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */; };
+		4A5429F42086544FB6B74715 /* SpotifyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37B9FD336B502C2631CE1AC /* SpotifyBridge.swift */; };
+		6840675AA08B039E98DEE788 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222692E3F82A38A810B173CC /* Assets.xcassets */; };
+		6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D19424FA99809284BA0AF1 /* MusiczyApp.swift */; };
+		7AB4F555E5D2190B9699ACBE /* LocalLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9613E1EE4DC57A20B0091C57 /* LocalLyrics.swift */; };
+		C237ABCA5EB17BD5949C7FA3 /* LockScreenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7689536428FEA244B7BC2E4B /* LockScreenWidget.swift */; };
+		C48E85130C0888525DD720FD /* SystemNowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FA7564BE6550D414A3D1C0 /* SystemNowPlaying.swift */; };
+		D051F8EDE6000529AE2C9113 /* NowPlayingDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E10A2168A691AD860CF8F6 /* NowPlayingDetector.swift */; };
+		DF8EDD73182E5B9C10D96679 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FCFDF8DB30FC712439A48B /* Song.swift */; };
+		EC16D2C79F97A8DD084387D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600F911DE212BD4DBB382F5 /* ContentView.swift */; };
+		F1F7BACA9A0F60E62B375865 /* CrossfadeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6529F8845DD592AE98E9993 /* CrossfadeImage.swift */; };
+		F908DBD9E494818E65F6D1BB /* PlayerSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509E0865016415DDAE9D6F23 /* PlayerSources.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		170869D726E6A1154DFDDC42 /* LyricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsService.swift; sourceTree = "<group>"; };
+		222692E3F82A38A810B173CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4E2507320EBF1B502B92F530 /* Musiczy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Musiczy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		509E0865016415DDAE9D6F23 /* PlayerSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSources.swift; sourceTree = "<group>"; };
+		51E10A2168A691AD860CF8F6 /* NowPlayingDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingDetector.swift; sourceTree = "<group>"; };
+		54D19424FA99809284BA0AF1 /* MusiczyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusiczyApp.swift; sourceTree = "<group>"; };
+		59FCFDF8DB30FC712439A48B /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		7689536428FEA244B7BC2E4B /* LockScreenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenWidget.swift; sourceTree = "<group>"; };
+		9613E1EE4DC57A20B0091C57 /* LocalLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalLyrics.swift; sourceTree = "<group>"; };
+		A37B9FD336B502C2631CE1AC /* SpotifyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyBridge.swift; sourceTree = "<group>"; };
+		A6FA7564BE6550D414A3D1C0 /* SystemNowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemNowPlaying.swift; sourceTree = "<group>"; };
+		D600F911DE212BD4DBB382F5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D6529F8845DD592AE98E9993 /* CrossfadeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossfadeImage.swift; sourceTree = "<group>"; };
+		E218EB4B21292603EFA73CB1 /* NowPlayingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F541765647339A664B187933 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				256A211103B6771172FB3C15 /* MediaRemoteAdapter in Frameworks */,
+				2D075BF34B2F279F120FD543 /* SkyLightWindow in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0EDA59B0E08F8FDB1AF15009 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				54D19424FA99809284BA0AF1 /* MusiczyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		248A765F973E0D78FE34323B /* Musiczy */ = {
+			isa = PBXGroup;
+			children = (
+				222692E3F82A38A810B173CC /* Assets.xcassets */,
+				0EDA59B0E08F8FDB1AF15009 /* App */,
+				59A70C11ECF4B1C03187DF97 /* Lyrics */,
+				6DFDA2EC85D75E117758C477 /* Models */,
+				974B5B56D8FA42C6C5AA480D /* Players */,
+				981DF5C90FAA7A49D7351473 /* Views */,
+			);
+			path = Musiczy;
+			sourceTree = "<group>";
+		};
+		59037E93E1D45E3F5EEB47C2 = {
+			isa = PBXGroup;
+			children = (
+				248A765F973E0D78FE34323B /* Musiczy */,
+				EB39FB07B708BC4D7BFDF0F9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		59A70C11ECF4B1C03187DF97 /* Lyrics */ = {
+			isa = PBXGroup;
+			children = (
+				9613E1EE4DC57A20B0091C57 /* LocalLyrics.swift */,
+				170869D726E6A1154DFDDC42 /* LyricsService.swift */,
+			);
+			path = Lyrics;
+			sourceTree = "<group>";
+		};
+		6DFDA2EC85D75E117758C477 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E218EB4B21292603EFA73CB1 /* NowPlayingViewModel.swift */,
+				59FCFDF8DB30FC712439A48B /* Song.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		974B5B56D8FA42C6C5AA480D /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				51E10A2168A691AD860CF8F6 /* NowPlayingDetector.swift */,
+				509E0865016415DDAE9D6F23 /* PlayerSources.swift */,
+				A37B9FD336B502C2631CE1AC /* SpotifyBridge.swift */,
+				A6FA7564BE6550D414A3D1C0 /* SystemNowPlaying.swift */,
+			);
+			path = Players;
+			sourceTree = "<group>";
+		};
+		981DF5C90FAA7A49D7351473 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D600F911DE212BD4DBB382F5 /* ContentView.swift */,
+				D6529F8845DD592AE98E9993 /* CrossfadeImage.swift */,
+				7689536428FEA244B7BC2E4B /* LockScreenWidget.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EB39FB07B708BC4D7BFDF0F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4E2507320EBF1B502B92F530 /* Musiczy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0C7992D55C3A93E96B1970FE /* Musiczy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5283060FD48C82D6ED3A7E48 /* Build configuration list for PBXNativeTarget "Musiczy" */;
+			buildPhases = (
+				136ED3CC12322D64ADD5FB44 /* Sources */,
+				53945350229594C9FC05DE77 /* Resources */,
+				F541765647339A664B187933 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Musiczy;
+			packageProductDependencies = (
+				19D7E86AE263724A37EB540B /* MediaRemoteAdapter */,
+				2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */,
+			);
+			productName = Musiczy;
+			productReference = 4E2507320EBF1B502B92F530 /* Musiczy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE61B0D7FB252A2ED55DAEB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0C7992D55C3A93E96B1970FE = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 8F3EFCB657D251C3CD200D03 /* Build configuration list for PBXProject "Musiczy" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 59037E93E1D45E3F5EEB47C2;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F9CDBB7D47AB27CBBB1FF1A8 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
+				2DC95C74003151904CD83432 /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EB39FB07B708BC4D7BFDF0F9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0C7992D55C3A93E96B1970FE /* Musiczy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		53945350229594C9FC05DE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6840675AA08B039E98DEE788 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		136ED3CC12322D64ADD5FB44 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC16D2C79F97A8DD084387D4 /* ContentView.swift in Sources */,
+				F1F7BACA9A0F60E62B375865 /* CrossfadeImage.swift in Sources */,
+				7AB4F555E5D2190B9699ACBE /* LocalLyrics.swift in Sources */,
+				C237ABCA5EB17BD5949C7FA3 /* LockScreenWidget.swift in Sources */,
+				22CFAD141CD71B4BD73A3151 /* LyricsService.swift in Sources */,
+				6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */,
+				D051F8EDE6000529AE2C9113 /* NowPlayingDetector.swift in Sources */,
+				07CB1B9C79D8F6CBEC360080 /* NowPlayingViewModel.swift in Sources */,
+				F908DBD9E494818E65F6D1BB /* PlayerSources.swift in Sources */,
+				DF8EDD73182E5B9C10D96679 /* Song.swift in Sources */,
+				4A5429F42086544FB6B74715 /* SpotifyBridge.swift in Sources */,
+				C48E85130C0888525DD720FD /* SystemNowPlaying.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		146EFABB5B4ACF1DA1E1DCCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		1A1E709CB2BB11E08581148F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Musiczy/Musiczy.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Musiczy/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.izzyflestado.musiczy;
+				PRODUCT_NAME = Musiczy;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5734A96D791E504906A7DA6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Musiczy/Musiczy.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Musiczy/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.izzyflestado.musiczy;
+				PRODUCT_NAME = Musiczy;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D1EE1A6706C3B36AC5B0891C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5283060FD48C82D6ED3A7E48 /* Build configuration list for PBXNativeTarget "Musiczy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A1E709CB2BB11E08581148F /* Debug */,
+				5734A96D791E504906A7DA6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8F3EFCB657D251C3CD200D03 /* Build configuration list for PBXProject "Musiczy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1EE1A6706C3B36AC5B0891C /* Debug */,
+				146EFABB5B4ACF1DA1E1DCCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2DC95C74003151904CD83432 /* XCRemoteSwiftPackageReference "SkyLightWindow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/SkyLightWindow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		F9CDBB7D47AB27CBBB1FF1A8 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ejbills/mediaremote-adapter.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		19D7E86AE263724A37EB540B /* MediaRemoteAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9CDBB7D47AB27CBBB1FF1A8 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */;
+			productName = MediaRemoteAdapter;
+		};
+		2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DC95C74003151904CD83432 /* XCRemoteSwiftPackageReference "SkyLightWindow" */;
+			productName = SkyLightWindow;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = AE61B0D7FB252A2ED55DAEB9 /* Project object */;
+}
