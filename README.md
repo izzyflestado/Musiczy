@@ -20,12 +20,9 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players,
 | --- | --- | --- |
 | Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
 | Apple Music | AppleScript (includes embedded artwork) | Works. |
-| Swinsian | AppleScript | Experimental. Written from memory of its AppleScript dictionary, not tested. |
-| VOX | AppleScript | Experimental. Same caveat, and the least certain of the set. |
-| VLC | AppleScript | Present in the code but switched off (also untested, and VLC exposes no artist, album or artwork). |
 | Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
 
-Priority order is Spotify, Apple Music, Swinsian, VOX, then the system fallback. Change it in `PlayerHub.sources` (`Musiczy/Players/PlayerSources.swift`). Playback controls always go to the player that is currently shown.
+Priority order is Spotify, Apple Music, then the system fallback. Change it in `PlayerHub.sources` (`Musiczy/Players/PlayerSources.swift`). Playback controls always go to the player that is currently shown.
 
 ## Requirements
 
@@ -135,12 +132,9 @@ project.yml    XcodeGen spec
 - Uses private macOS APIs (SkyLight for the lock-screen window, MediaRemote for the system fallback). A macOS update can break them.
 - The lock-screen card is created on the main display only.
 - Players are polled once per second through AppleScript.
-- Swinsian, VOX and VLC support is unverified.
 
 ## Credits
 
 - [LRCLIB](https://lrclib.net) for free synced lyrics
 - [ejbills/mediaremote-adapter](https://github.com/ejbills/mediaremote-adapter), a fork of [ungive/mediaremote-adapter](https://github.com/ungive/mediaremote-adapter)
 - [Lakr233/SkyLightWindow](https://github.com/Lakr233/SkyLightWindow)
-
-Made by Izzy.
