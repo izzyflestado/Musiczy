@@ -16,7 +16,7 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players,
 
 ## Supported players
 
-| Player | How it is read | Status |
+| Player (Priority) | How it is read | Status |
 | --- | --- | --- |
 | Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
 | Apple Music | AppleScript (includes embedded artwork) | Works. |
