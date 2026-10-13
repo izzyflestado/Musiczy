@@ -2,7 +2,7 @@
 
 A music visualizer for macOS with synced lyrics, several styles, plus a lock screen option.
 
-Musiczy reads what is playing from Spotify, Apple Music and a few other players, shows the cover art on a blurred full-screen background, scrolls time-synced lyrics, and lets you control playback with the mouse or keyboard.
+Musiczy reads what is playing from Spotify, Apple Music and a few other players (also support browser playback), shows the cover art on a blurred full-screen background, scrolls time-synced lyrics, and lets you control playback with the mouse or keyboard.
 
 ## Features
 
@@ -18,9 +18,9 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players,
 
 | Player (Priority) | How it is read | Status |
 | --- | --- | --- |
-| Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
-| Apple Music | AppleScript (includes embedded artwork) | Works. |
-| Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
+| 1. Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
+| 2. Apple Music | AppleScript (includes embedded artwork) | Works. |
+| 3. Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
 
 
 ## Requirements
