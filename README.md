@@ -1,8 +1,9 @@
 # Musiczy
 
-A full-screen "Now Playing" display for macOS with synced lyrics, plus a floating player card that appears on the lock screen.
+A music visualizer for macOS with synced lyrics, several styles, plus a lock screen option.
 
-Musiczy reads what is playing from Spotify, Apple Music and a few other players, shows the cover art on a blurred full-screen background, scrolls time-synced lyrics, and lets you control playback with the mouse or keyboard.
+Musiczy reads what is playing from Spotify, Apple Music and a few other players (also support browser playback), shows the cover art on a blurred full-screen background, scrolls time-synced lyrics, and lets you control playback with the mouse or keyboard.
+
 
 ## Features
 
@@ -16,16 +17,12 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players,
 
 ## Supported players
 
-| Player | How it is read | Status |
+| Player (Priority) | How it is read | Status |
 | --- | --- | --- |
-| Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
-| Apple Music | AppleScript (includes embedded artwork) | Works. |
-| Swinsian | AppleScript | Experimental. Written from memory of its AppleScript dictionary, not tested. |
-| VOX | AppleScript | Experimental. Same caveat, and the least certain of the set. |
-| VLC | AppleScript | Present in the code but switched off (also untested, and VLC exposes no artist, album or artwork). |
-| Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
+| 1. Spotify | AppleScript | Works. Ads are detected: the title is hidden, lyrics are hidden and seeking is disabled. |
+| 2. Apple Music | AppleScript (includes embedded artwork) | Works. |
+| 3. Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
 
-Priority order is Spotify, Apple Music, Swinsian, VOX, then the system fallback. Change it in `PlayerHub.sources` (`Musiczy/Players/PlayerSources.swift`). Playback controls always go to the player that is currently shown.
 
 ## Requirements
 
@@ -76,7 +73,7 @@ tccutil reset AppleEvents com.izzyflestado.musiczy
 | Previous / next | `←` / `→`, or the buttons |
 | Seek | Click or drag the progress bar, or click a lyric line |
 | Browse lyrics | Scroll; clicking empty space returns to the current line |
-| Switch Art / Lyrics | The two round buttons above the cover. Press the active one again to change the display style |
+| Switch Art / Lyrics | The two buttons (for with-lyrics and art-only) above the cover. Press the active one again to change the display style |
 | Window buttons | Move the mouse to the top edge. Red quits, green toggles full-screen / windowed |
 | Quit | The ✕ button, the red window button, or closing the window |
 
@@ -102,45 +99,15 @@ Musiczy makes network requests only to:
 
 There is no account, analytics or tracking.
 
-## Customising
-
-| What | Where |
-| --- | --- |
-| Player priority, enable VLC | `PlayerHub.sources` in `Players/PlayerSources.swift` |
-| Turn the system fallback off | `SystemSource.isEnabled` in `Players/SystemNowPlaying.swift` |
-| Lock-card size, glow, position | `LockStyle` in `Views/LockScreenWidget.swift` |
-| Lyric line length | `LyricsService.maxChars` in `Lyrics/LyricsService.swift` |
-
-## Project layout
-
-```
-Musiczy/
-  App/         MusiczyApp.swift            app entry point, window creation
-  Models/      Song.swift, NowPlayingViewModel.swift
-  Players/     PlayerSources.swift         player hub + AppleScript players
-               SpotifyBridge.swift         Spotify AppleScript
-               SystemNowPlaying.swift      macOS "Now Playing" fallback
-               NowPlayingDetector.swift    playback-change notifications
-  Lyrics/      LyricsService.swift         LRCLIB client + LRC parser
-               LocalLyrics.swift           .lrc and FLAC lookup
-  Views/       ContentView.swift           main screen, window manager
-               LockScreenWidget.swift      lock-screen controller and card
-               CrossfadeImage.swift
-  Assets.xcassets, Info.plist, Musiczy.entitlements
-project.yml    XcodeGen spec
-```
 
 ## Known limitations
 
 - Uses private macOS APIs (SkyLight for the lock-screen window, MediaRemote for the system fallback). A macOS update can break them.
 - The lock-screen card is created on the main display only.
 - Players are polled once per second through AppleScript.
-- Swinsian, VOX and VLC support is unverified.
 
-## Credits
+## Credits & acknowledgement 
 
 - [LRCLIB](https://lrclib.net) for free synced lyrics
-- [ejbills/mediaremote-adapter](https://github.com/ejbills/mediaremote-adapter), a fork of [ungive/mediaremote-adapter](https://github.com/ungive/mediaremote-adapter)
-- [Lakr233/SkyLightWindow](https://github.com/Lakr233/SkyLightWindow)
-
-Made by Izzy.
+- [ejbills/mediaremote-adapter](https://github.com/ejbills/mediaremote-adapter), a fork of [ungive/mediaremote-adapter](https://github.com/ungive/mediaremote-adapter) to detect system media.
+- [Lakr233/SkyLightWindow](https://github.com/Lakr233/SkyLightWindow) for locked screen display
