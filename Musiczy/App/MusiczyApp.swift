@@ -29,6 +29,6 @@ struct MusiczyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        Settings { EmptyView() }   // SwiftUI no longer makes its own window
+        Settings { EmptyView() }
     }
 }
