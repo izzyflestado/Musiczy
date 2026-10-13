@@ -5,9 +5,6 @@ A music visualizer for macOS with synced lyrics, several styles, plus a lock scr
 Musiczy reads what is playing from Spotify, Apple Music and a few other players (also support browser playback), shows the cover art on a blurred full-screen background, scrolls time-synced lyrics, and lets you control playback with the mouse or keyboard.
 
 
-## Preview
-https://drive.google.com/file/d/1EoHRKORs2U1u0m3Dt28Tpa9JiY31hlql/view?usp=sharing
-
 ## Features
 
 - **Full-screen player.** Large cover art, title / artist / album, a seekable progress bar and play / previous / next controls over a blurred, colour-boosted copy of the cover.
