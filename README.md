@@ -22,7 +22,6 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players,
 | Apple Music | AppleScript (includes embedded artwork) | Works. |
 | Anything else | macOS "Now Playing" via [MediaRemoteAdapter](https://github.com/ejbills/mediaremote-adapter) | Fallback. Relies on private macOS APIs, so it may stop working after a macOS update. |
 
-Priority order is Spotify, Apple Music, then the system fallback. Change it in `PlayerHub.sources` (`Musiczy/Players/PlayerSources.swift`). Playback controls always go to the player that is currently shown.
 
 ## Requirements
 
