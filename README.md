@@ -60,7 +60,6 @@ tccutil reset AppleEvents com.izzyflestado.musiczy
 | Seek | Click or drag the progress bar, or click a lyric line |
 | Browse lyrics | Scroll; clicking empty space returns to the current line |
 | Switch Art / Lyrics | The two buttons (for with-lyrics and art-only) above the cover. Press the active one again to change the display style |
-| Window buttons | Move the mouse to the top edge. Red quits, green toggles full-screen / windowed |
 | Quit | The ✕ button, the red window button, or closing the window |
 
 Musiczy must already be running when you lock the Mac for the lock-screen card to appear, and it only shows once a song has been detected.
