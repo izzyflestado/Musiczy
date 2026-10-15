@@ -9,7 +9,7 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players 
 
 
 ## Download
-Grab the latest Musiczy.dmg from the [Releases page](https://github.com/izzyflestado/Musiczy/releases).
+Grab the latest [Musiczy.dmg](https://github.com/izzyflestado/Musiczy/releases/download/V1.0.0/Musiczy.dmg) from the [Releases page](https://github.com/izzyflestado/Musiczy/releases).
 
 1. Open the DMG and drag Musiczy into Applications.
 2. Open Musiczy from Applications.
