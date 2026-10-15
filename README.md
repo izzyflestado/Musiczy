@@ -7,6 +7,14 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players 
 ## Preview
 ![Musiczy Screenshot](Media/Untitled%20design.png)
 
+
+## Download
+Grab the latest Musiczy.dmg from the Releases page.
+
+1. Open the DMG and drag Musiczy into Applications.
+2. Open Musiczy from Applications.
+3. If macOS says the app can't be opened because it is from an unidentified developer, right-click the app, choose Open, then confirm. You can also go to System Settings > Privacy & Security and click Open Anyway.
+
 ## Features
 
 - **Full-screen player.** Large cover art, title / artist / album, a seekable progress bar and play / previous / next controls over a blurred, colour-boosted copy of the cover.
@@ -32,36 +40,12 @@ Musiczy reads what is playing from Spotify, Apple Music and a few other players 
 - Xcode 15 or later.
 - Not sandboxed (it uses AppleScript, runs `mdfind` and reads files next to your songs), so it is not set up for the Mac App Store.
 
-## Build and run
-
-### Option A: XcodeGen (quickest)
-
-```sh
-brew install xcodegen
-xcodegen generate
-open Musiczy.xcodeproj
-```
-
-Then pick your Team under *Signing & Capabilities* and press Run.
-
-### Option B: set the project up by hand in Xcode
-
-1. Create a new **macOS > App** project (SwiftUI, Swift), deployment target macOS 14.0.
-2. Delete the template source files and drag the `.swift` files (keep the sub-folders) and `Assets.xcassets` from the `Musiczy/` folder into the project, ticking "Copy items if needed" and your target. Don't add `Info.plist` or the `.entitlements` file as target members; step 4 points the build settings at them instead.
-3. *File > Add Package Dependencies*, then add both:
-   - `https://github.com/ejbills/mediaremote-adapter.git` (branch `master`, product `MediaRemoteAdapter`)
-   - `https://github.com/Lakr233/SkyLightWindow` (from `1.0.0`)
-4. In the target's *Build Settings*: set **Swift Language Version** to Swift 5, **Info.plist File** to `Musiczy/Info.plist`, **Code Signing Entitlements** to `Musiczy/Musiczy.entitlements`.
-5. In *Signing & Capabilities*, make sure **App Sandbox is not enabled**.
-6. Build and run.
-
-The project was not compiled in the environment where it was edited (no macOS toolchain available), so if Xcode reports a package product name mismatch, check the exact product names in the package list and adjust `project.yml` or the target's dependencies.
 
 ## First launch and permissions
 
-macOS asks for permission the first time Musiczy talks to Spotify or Music: *"Musiczy wants access to control Spotify"*. Click **OK**.
+macOS asks for permission the first time Musiczy talks to Spotify or Music: "Musiczy wants access to control Spotify". Click OK.
 
-If you click *Don't Allow*, Musiczy shows a hint on the placeholder screen. Fix it in **System Settings > Privacy & Security > Automation** and tick the player under Musiczy. To bring the prompt back:
+If you click Don't Allow, Musiczy shows a hint on the placeholder screen. Fix it in System Settings > Privacy & Security > Automation and tick the player under Musiczy. To bring the prompt back: 
 
 ```sh
 tccutil reset AppleEvents com.izzyflestado.musiczy
