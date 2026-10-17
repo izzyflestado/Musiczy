@@ -27,7 +27,9 @@ targets:
           - Musiczy.entitlements
     dependencies:
       - package: MediaRemoteAdapter
+        embed: true
       - package: SkyLightWindow
+        embed: false
     settings:
       base:
         PRODUCT_NAME: Musiczy

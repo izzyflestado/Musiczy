@@ -57,6 +57,33 @@ enum SpotifyBridge {
         return (error == nil ? result : nil, error)
     }
 
+    // MARK: - Mute during ads
+
+    /// Spotify's volume from before we silenced it for an ad. nil = we haven't muted it.
+    private static var savedVolume: Int?
+
+    /// Sets Spotify's own volume to 0 during an ad, then puts it back.
+    /// Only Spotify is affected, not the rest of your Mac's audio.
+    static func setAdMuted(_ muted: Bool) {
+        guard isRunning else {
+            savedVolume = nil
+            return
+        }
+
+        if muted {
+            guard savedVolume == nil else { return }   // already muted
+            guard let current = run("tell application id \"com.spotify.client\" to return sound volume")?
+                    .result?.int32Value else { return }   // busy or failed: retry next second
+            savedVolume = Int(current)
+            _ = run("tell application id \"com.spotify.client\" to set sound volume to 0")
+        } else if let volume = savedVolume {
+            // Only forget the saved volume once the restore really ran.
+            guard run("tell application id \"com.spotify.client\" to set sound volume to \(volume)") != nil
+            else { return }
+            savedVolume = nil
+        }
+    }
+    
     // MARK: - Controls
 
     /// Sends a command to Spotify: "playpause", "next track" or "previous track".

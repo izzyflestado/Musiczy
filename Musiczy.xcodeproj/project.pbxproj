@@ -21,8 +21,23 @@
 		DF8EDD73182E5B9C10D96679 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FCFDF8DB30FC712439A48B /* Song.swift */; };
 		EC16D2C79F97A8DD084387D4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600F911DE212BD4DBB382F5 /* ContentView.swift */; };
 		F1F7BACA9A0F60E62B375865 /* CrossfadeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6529F8845DD592AE98E9993 /* CrossfadeImage.swift */; };
+		F6142217521FC93F688ECB8E /* MediaRemoteAdapter in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 19D7E86AE263724A37EB540B /* MediaRemoteAdapter */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F908DBD9E494818E65F6D1BB /* PlayerSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509E0865016415DDAE9D6F23 /* PlayerSources.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		016DB676005C26BBAAEEF4FA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F6142217521FC93F688ECB8E /* MediaRemoteAdapter in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		170869D726E6A1154DFDDC42 /* LyricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsService.swift; sourceTree = "<group>"; };
@@ -140,6 +155,7 @@
 				136ED3CC12322D64ADD5FB44 /* Sources */,
 				53945350229594C9FC05DE77 /* Resources */,
 				F541765647339A664B187933 /* Frameworks */,
+				016DB676005C26BBAAEEF4FA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
