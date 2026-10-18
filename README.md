@@ -95,7 +95,7 @@ There is no account, analytics or tracking.
 - The lock-screen card is created on the main display only.
 - Players are polled once per second through AppleScript.
 
-  ## Roadmap
+## Roadmap
 
 - [ ] Add feature: Menu bar icon and option
 - [ ] Add branding: Logo
