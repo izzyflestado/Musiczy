@@ -84,6 +84,16 @@ Musiczy makes network requests only to:
 
 There is no account, analytics or tracking.
 
+## Known bugs
+
+- Visual bug on lock screen - Unblurred glow effect on lock screen.
+- Visual bug during ads 
+
+## Roadmap
+
+- [ ] Add feature: Menu bar icon and option
+- [ ] Add branding: Logo
+- [x] Add feature: Mute music during adds
 
 ## Known limitations
 
