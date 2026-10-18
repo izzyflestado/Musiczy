@@ -89,17 +89,17 @@ There is no account, analytics or tracking.
 - Visual bug on lock screen - Unblurred glow effect on lock screen.
 - Visual bug during ads 
 
-## Roadmap
-
-- [ ] Add feature: Menu bar icon and option
-- [ ] Add branding: Logo
-- [x] Add feature: Mute music during adds
-
 ## Known limitations
 
 - Uses private macOS APIs (SkyLight for the lock-screen window, MediaRemote for the system fallback). A macOS update can break them.
 - The lock-screen card is created on the main display only.
 - Players are polled once per second through AppleScript.
+
+  ## Roadmap
+
+- [ ] Add feature: Menu bar icon and option
+- [ ] Add branding: Logo
+- [x] Add feature: Mute music during adds
 
 ## Credits & acknowledgement 
 
