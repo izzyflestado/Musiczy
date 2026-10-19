@@ -21,6 +21,7 @@ Grab the latest [Musiczy.dmg](https://github.com/izzyflestado/Musiczy/releases/d
 - **Synced lyrics.** The current line is highlighted and scrolls with the song. Click a line to jump to it; scroll to browse (it snaps back to the current line after 3 seconds).
 - **Three display styles.** Press the active *Art* or *Lyrics* button again to cycle: normal, full-screen HD cover, and full-screen HD cover with a bottom bar.
 - **Lock-screen card.** When the Mac locks, a small glass card with the cover and title floats above the lock screen. Hover to expand it (progress bar and controls), click the cover to go full-screen with lyrics.
+- **Muted ads.** Mute Spotify when playing ads then returns to original volume after finishing.
 - **HD artwork.** Spotify covers are swapped for a larger version; for other players Musiczy looks up a high-resolution cover through the iTunes Search API and falls back to the embedded one.
 - **Multiple players.** See the table below. A player that is *playing* always wins over one that is only paused.
 - **Idle mode.** After 3 seconds without mouse movement the cursor, buttons and controls fade out.
