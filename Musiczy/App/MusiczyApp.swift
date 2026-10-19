@@ -19,7 +19,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.shared.setup(window)
     }
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+    func applicationShouldTexrminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
     func applicationWillTerminate(_ notification: Notification) {

@@ -142,7 +142,9 @@ enum SpotifyBridge {
         let position   = Double(result.atIndex(6)?.int32Value ?? 0)         // seconds
         let duration   = Double(result.atIndex(7)?.int32Value ?? 0) / 1000  // ms to seconds
         let spotifyURL = result.atIndex(8)?.stringValue ?? ""
-
+        
+        print("SPOTIFY DEBUG | title: \(title) | artist: \(artist) | url: \(spotifyURL)")
+        
         return SpotifyTrack(
             title: title,
             artist: artist,
@@ -152,6 +154,12 @@ enum SpotifyBridge {
             position: position,
             duration: duration,
             isAd: spotifyURL.hasPrefix("spotify:ad")
+                || spotifyURL.contains(":ad:")
+                || spotifyURL.contains("/ad/")
+                || title == "Advertisement"
+                || (artist == "Spotify"
+                    && !spotifyURL.hasPrefix("spotify:track:")
+                    && !spotifyURL.hasPrefix("spotify:episode:"))
         )
     }
 }

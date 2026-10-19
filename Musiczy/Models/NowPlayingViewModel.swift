@@ -56,7 +56,6 @@ final class NowPlayingViewModel: ObservableObject {
         guard Date() >= pausePollingUntil else { return }
 
         guard let track = PlayerHub.currentTrack() else {
-            SpotifyBridge.setAdMuted(false)   // player stopped mid-ad
             updateIdleHint()
             return
         }
