@@ -88,7 +88,6 @@ There is no account, analytics or tracking.
 
 - Visual bug on lock screen - Unblurred glow effect on lock screen.
 - Visual bug during ads 
-- Audio bug - Still does not mute during ads
 
 ## Known limitations
 
