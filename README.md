@@ -100,6 +100,7 @@ There is no account, analytics or tracking.
 
 - [ ] Add feature: Menu bar icon and option
 - [ ] Add branding: Logo
+- [ ] Add feature: Select file to play during ads
 - [x] Add feature: Mute music during adds
 
 ## Credits & acknowledgement 
