@@ -88,7 +88,8 @@ There is no account, analytics or tracking.
 ## Known bugs
 
 - Visual bug on lock screen - Unblurred glow effect on lock screen.
-- Visual bug during ads 
+- Visual bug during ads
+- Visual bug - Sometimes does not switch cover art when changing songs (might do this if tabbed out).
 
 ## Known limitations
 
