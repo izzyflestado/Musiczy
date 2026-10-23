@@ -99,9 +99,10 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
+- [ ] Add feature: Option to replace lock screen wallpaper with cover art
+- [ ] Add feature: Select file to play during ads
 - [ ] Add feature: Menu bar icon and option
 - [ ] Add branding: Logo
-- [ ] Add feature: Select file to play during ads
 - [x] Add feature: Mute music during adds
 
 ## Credits & acknowledgement 
