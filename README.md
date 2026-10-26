@@ -1,4 +1,10 @@
-# Musiczy
+#<p align="center">
+  <img src="Media/logo.png" alt="Multimail_logo" width="100">
+</p>
+
+<h1 align="center">Musiczy</h1>
+
+<br>
 
 A music visualizer for macOS with synced lyrics, several styles, plus a lock screen option.
 
