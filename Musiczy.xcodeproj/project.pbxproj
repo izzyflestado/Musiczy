@@ -12,6 +12,9 @@
 		256A211103B6771172FB3C15 /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 19D7E86AE263724A37EB540B /* MediaRemoteAdapter */; };
 		2D075BF34B2F279F120FD543 /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */; };
 		43FA56673090684D004AFD29 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA56663090684D004AFD29 /* MenuBarView.swift */; };
+		43FA566930906FD6004AFD29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566830906FD6004AFD29 /* SettingsView.swift */; };
+		43FA566B30907276004AFD29 /* WallpaperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566A30907276004AFD29 /* WallpaperManager.swift */; };
+		43FA566D309074CB004AFD29 /* AdAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566C309074CB004AFD29 /* AdAudioPlayer.swift */; };
 		4A5429F42086544FB6B74715 /* SpotifyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37B9FD336B502C2631CE1AC /* SpotifyBridge.swift */; };
 		6840675AA08B039E98DEE788 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222692E3F82A38A810B173CC /* Assets.xcassets */; };
 		6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D19424FA99809284BA0AF1 /* MusiczyApp.swift */; };
@@ -44,6 +47,9 @@
 		170869D726E6A1154DFDDC42 /* LyricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsService.swift; sourceTree = "<group>"; };
 		222692E3F82A38A810B173CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43FA56663090684D004AFD29 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		43FA566830906FD6004AFD29 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		43FA566A30907276004AFD29 /* WallpaperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperManager.swift; sourceTree = "<group>"; };
+		43FA566C309074CB004AFD29 /* AdAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdAudioPlayer.swift; sourceTree = "<group>"; };
 		4E2507320EBF1B502B92F530 /* Musiczy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Musiczy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509E0865016415DDAE9D6F23 /* PlayerSources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSources.swift; sourceTree = "<group>"; };
 		51E10A2168A691AD860CF8F6 /* NowPlayingDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingDetector.swift; sourceTree = "<group>"; };
@@ -114,6 +120,8 @@
 			children = (
 				E218EB4B21292603EFA73CB1 /* NowPlayingViewModel.swift */,
 				59FCFDF8DB30FC712439A48B /* Song.swift */,
+				43FA566A30907276004AFD29 /* WallpaperManager.swift */,
+				43FA566C309074CB004AFD29 /* AdAudioPlayer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,6 +144,7 @@
 				43FA56663090684D004AFD29 /* MenuBarView.swift */,
 				D6529F8845DD592AE98E9993 /* CrossfadeImage.swift */,
 				7689536428FEA244B7BC2E4B /* LockScreenWidget.swift */,
+				43FA566830906FD6004AFD29 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,11 +237,14 @@
 			files = (
 				EC16D2C79F97A8DD084387D4 /* ContentView.swift in Sources */,
 				43FA56673090684D004AFD29 /* MenuBarView.swift in Sources */,
+				43FA566D309074CB004AFD29 /* AdAudioPlayer.swift in Sources */,
 				F1F7BACA9A0F60E62B375865 /* CrossfadeImage.swift in Sources */,
 				7AB4F555E5D2190B9699ACBE /* LocalLyrics.swift in Sources */,
+				43FA566B30907276004AFD29 /* WallpaperManager.swift in Sources */,
 				C237ABCA5EB17BD5949C7FA3 /* LockScreenWidget.swift in Sources */,
 				22CFAD141CD71B4BD73A3151 /* LyricsService.swift in Sources */,
 				6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */,
+				43FA566930906FD6004AFD29 /* SettingsView.swift in Sources */,
 				D051F8EDE6000529AE2C9113 /* NowPlayingDetector.swift in Sources */,
 				07CB1B9C79D8F6CBEC360080 /* NowPlayingViewModel.swift in Sources */,
 				F908DBD9E494818E65F6D1BB /* PlayerSources.swift in Sources */,

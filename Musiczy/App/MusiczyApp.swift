@@ -17,6 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
         NSApp.activate()
         WindowManager.shared.setup(window)
+        WallpaperManager.shared.start()
     }
 
     func applicationShouldTexrminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -24,6 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     func applicationWillTerminate(_ notification: Notification) {
         SpotifyBridge.setAdMuted(false)
+        WallpaperManager.shared.restore()
     }
 }
 
@@ -38,7 +40,5 @@ struct MusiczyApp: App {
             Image("MenuBarIcon")
         }
         .menuBarExtraStyle(.window)
-
-        Settings { EmptyView() }
     }
 }

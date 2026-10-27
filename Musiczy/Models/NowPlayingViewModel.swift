@@ -56,6 +56,7 @@ final class NowPlayingViewModel: ObservableObject {
         guard Date() >= pausePollingUntil else { return }
 
         guard let track = PlayerHub.currentTrack() else {
+            AdAudioPlayer.shared.trackLost()    
             updateIdleHint()
             return
         }
@@ -63,6 +64,7 @@ final class NowPlayingViewModel: ObservableObject {
         isPlaying = track.isPlaying
         isAd = track.isAd
         SpotifyBridge.setAdMuted(track.isAd)
+        AdAudioPlayer.shared.update(isAd: track.isAd, isPlaying: track.isPlaying)
         
         // Update the progress bar (runs every second, before the song-change check)
         let newProgress = track.duration > 0
