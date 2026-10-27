@@ -32,6 +32,13 @@ struct MusiczyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
+        MenuBarExtra {
+            MenuBarView()
+        } label: {
+            Image("MenuBarIcon")
+        }
+        .menuBarExtraStyle(.window)
+
         Settings { EmptyView() }
     }
 }
