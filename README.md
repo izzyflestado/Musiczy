@@ -105,10 +105,11 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
-- [ ] Add feature: Option to replace lock screen wallpaper with cover art
-- [ ] Add feature: Select file to play during ads
-- [ ] Add feature: Menu bar icon and option
-- [ ] Add branding: Logo
+- [ ] Add mode state: Option to make blurred background black with animated shine on border mode
+- [x] Add feature: Option to replace lock screen wallpaper with cover art
+- [x] Add feature: Select file to play during ads
+- [x] Add feature: Menu bar icon and option
+- [x] Add branding: Logo
 - [x] Add feature: Mute music during adds
 
 ## Credits & acknowledgement 
