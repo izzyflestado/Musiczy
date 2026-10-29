@@ -13,17 +13,37 @@ struct NowPlayingScreen: View {
     @ObservedObject var viewModel: NowPlayingViewModel
     var coverNamespace: Namespace.ID? = nil
     @ObservedObject private var activity = WindowManager.shared.activity
-    @State private var mode: ViewMode = .art
     @State private var dragFraction: Double? = nil
     @State private var shownTitle = ""
     @State private var shownArtist = ""
     @State private var shownAlbum = ""
     @State private var shownDuration: Double = 0
     @State private var textOpacity: Double = 1
-    @State private var artStyle = 0   // 0 = normal, 1 = HD centered, 2 = HD with bottom bar
     @State private var browseFocus: CGFloat? = nil   // nil = follow the song
     @State private var browseReset: DispatchWorkItem? = nil
+
     
+    // The display style (Art/Lyrics + its 3 styles). The main window shares it with Settings
+    // and remembers it. The lock-screen copy keeps its own, so it always starts fresh.
+    @StateObject private var style: DisplayStyleStore
+
+    private var mode: ViewMode {
+        get { style.mode }
+        nonmutating set { style.mode = newValue }
+    }
+
+    private var artStyle: Int {
+        get { style.artStyle }
+        nonmutating set { style.artStyle = newValue }
+    }
+
+    init(viewModel: NowPlayingViewModel, coverNamespace: Namespace.ID? = nil) {
+        self.viewModel = viewModel
+        self.coverNamespace = coverNamespace
+        _style = StateObject(wrappedValue: coverNamespace == nil
+                             ? DisplayStyleStore.shared
+                             : DisplayStyleStore(persist: false))
+    }
     
     private var hasLyrics: Bool { !viewModel.lyrics.isEmpty && !viewModel.isAd }
     

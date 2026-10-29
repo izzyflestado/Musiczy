@@ -16,11 +16,12 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            Section("Display style") {
+                DisplayStylePicker()
+            }
+
             Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
-                Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
 
             Section("Ads") {
@@ -52,7 +53,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 420, height: 440)
+        .frame(width: 560, height: 700)
         .fileImporter(isPresented: $pickingFile, allowedContentTypes: [.audio]) { result in
             if case .success(let url) = result {
                 adPlayer.stopPreview()

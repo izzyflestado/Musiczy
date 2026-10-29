@@ -20,8 +20,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         WallpaperManager.shared.start()
     }
 
-    func applicationShouldTexrminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
     func applicationWillTerminate(_ notification: Notification) {
         SpotifyBridge.setAdMuted(false)
