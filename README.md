@@ -105,7 +105,8 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
-- [ ] Add mode state: Option to make blurred background black with animated shine on border mode
+- [ ] Add feature: Ambient border shine
+- [ ] Add mode state: Option for 1 word per line mode
 - [ ] Fix: Detert cover art for alternate file for ad
 - [x] Add option: Select display style on settings with preview
 - [x] Add feature: Option to replace lock screen wallpaper with cover art
