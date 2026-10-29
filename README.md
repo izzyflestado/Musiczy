@@ -106,6 +106,7 @@ There is no account, analytics or tracking.
 ## Roadmap
 
 - [ ] Add mode state: Option to make blurred background black with animated shine on border mode
+- [ ] Fix: Detert cover art for alternate file for ad
 - [x] Add option: Select display style on settings with preview
 - [x] Add feature: Option to replace lock screen wallpaper with cover art
 - [x] Add feature: Select file to play during ads
