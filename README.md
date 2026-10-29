@@ -108,6 +108,7 @@ There is no account, analytics or tracking.
 - [ ] Add feature: Ambient border shine
 - [ ] Add mode state: Option for 1 word per line mode
 - [ ] Fix: Detert cover art for alternate file for ad
+- [ ] Update: Ad alt file feature to choose more than 1 song and random selec 
 - [x] Add option: Select display style on settings with preview
 - [x] Add feature: Option to replace lock screen wallpaper with cover art
 - [x] Add feature: Select file to play during ads
