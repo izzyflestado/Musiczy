@@ -17,10 +17,19 @@ struct MenuBarView: View {
 
     var body: some View {
         VStack(spacing: 14) {
-            HStack(alignment: .center, spacing: 14) {
-                cover
-                info
+            Button {
+                closePanel()                              // close the panel first
+                WindowManager.shared.showMainWindow()     // then open the full-screen player
+            } label: {
+                HStack(alignment: .center, spacing: 14) {
+                    cover
+                    info
+                }
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .help("Open the full-screen player")
+
             progress
             controls
             footer

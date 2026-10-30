@@ -744,6 +744,23 @@ struct ContentView: View {
             activity.isActive = true
         }
         
+        /// Brings the main player to the front and makes it fill the screen.
+        func showMainWindow() {
+            guard let window = mainWindow else { return }
+
+            if window.isMiniaturized { window.deminiaturize(nil) }
+
+            if !isFilled {
+                fill(window)
+                setButtons(visible: false, window: window, animated: false)
+            }
+
+            NSApp.activate()
+            window.makeKeyAndOrderFront(nil)
+            window.orderFrontRegardless()
+            userActive()   // show the cursor and controls, restart the idle countdown
+        }
+        
         @objc func toggleFill() {
             guard let window = mainWindow else { return }
             if isFilled {
