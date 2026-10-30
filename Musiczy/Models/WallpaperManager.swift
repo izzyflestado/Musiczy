@@ -62,6 +62,9 @@ final class WallpaperManager {
     private func apply(_ art: NSImage, key: String) {
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
 
+        // Use the HD cover when we have it.
+        let source = NowPlayingViewModel.shared.hiResArtwork ?? art
+
         // Remember the user's own wallpaper once, before the first swap.
         if !applied { saveOriginals() }
 
@@ -72,11 +75,11 @@ final class WallpaperManager {
 
         var newFiles: [URL] = []
         for screen in NSScreen.screens {
-            guard let data = renderJPEG(art, size: screen.frame.size, scale: screen.backingScaleFactor)
+            guard let data = renderPNG(source, size: screen.frame.size, scale: screen.backingScaleFactor)
             else { continue }
 
             // A new file name every time, because macOS caches wallpapers by file path.
-            let file = folder.appendingPathComponent("cover-\(UUID().uuidString).jpg")
+            let file = folder.appendingPathComponent("cover-\(UUID().uuidString).png")
             guard (try? data.write(to: file)) != nil else { continue }
 
             do {
@@ -146,13 +149,13 @@ final class WallpaperManager {
     }
 
     /// Draws the blurred cover at the screen's size and returns it as a JPEG.
-    private func renderJPEG(_ art: NSImage, size: CGSize, scale: CGFloat) -> Data? {
+    /// Draws the blurred cover at the screen's size and returns it as a lossless PNG.
+    private func renderPNG(_ art: NSImage, size: CGSize, scale: CGFloat) -> Data? {
         MainActor.assumeIsolated { () -> Data? in
             let renderer = ImageRenderer(content: WallpaperCanvas(image: art, size: size))
             renderer.scale = scale
             guard let cg = renderer.cgImage else { return nil }
-            return NSBitmapImageRep(cgImage: cg)
-                .representation(using: .jpeg, properties: [.compressionFactor: 0.9])
+            return NSBitmapImageRep(cgImage: cg).representation(using: .png, properties: [:])
         }
     }
 }
