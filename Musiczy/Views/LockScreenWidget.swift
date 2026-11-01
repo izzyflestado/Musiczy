@@ -275,6 +275,7 @@ struct LockCard: View {
     @ObservedObject var controller: LockScreenController
     let expanded: Bool
     let coverNS: Namespace.ID
+    @ObservedObject private var glowStore = GlowStore.shared
 
     private var innerWidth: CGFloat { LockStyle.cardWidth - LockStyle.inset * 2 }
     
@@ -443,20 +444,19 @@ struct LockCard: View {
             .allowsHitTesting(false)
     }
 
-    /// Glow shaped like the cover (rounded), used when the card is compact.
+    /// Glow shaped like the cover, used when the card is compact.
+    /// It's a ready-made blurred picture from GlowStore, not a live blur effect.
     private var coverGlow: some View {
-        Group {
-            if let art = viewModel.song.artwork {
-                Image(nsImage: art).resizable().scaledToFill()
+        let side = GlowStore.side
+        return Group {
+            if let glow = glowStore.image {
+                Image(nsImage: glow)
+                    .resizable()
+                    .interpolation(.high)
+                    .frame(width: side, height: side)
+                    .opacity(LockStyle.compactGlowOpacity)
             }
         }
-        .frame(width: LockStyle.coverSize, height: LockStyle.coverSize)
-        .clipShape(RoundedRectangle(cornerRadius: LockStyle.coverSize * LockStyle.coverRounding,
-                                    style: .continuous))
-        .scaleEffect(LockStyle.compactGlowScale)
-        .blur(radius: LockStyle.compactGlowBlur)
-        .saturation(LockStyle.glowSaturation)
-        .opacity(LockStyle.compactGlowOpacity)
         .allowsHitTesting(false)
     }
     

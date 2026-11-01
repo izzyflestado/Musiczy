@@ -18,6 +18,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate()
         WindowManager.shared.setup(window)
         WallpaperManager.shared.start()
+        GlowStore.shared.start() 
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

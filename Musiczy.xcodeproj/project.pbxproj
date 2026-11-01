@@ -13,6 +13,7 @@
 		2D075BF34B2F279F120FD543 /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */; };
 		4302392030923073001B4AE0 /* DisplayStyleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302391F30923073001B4AE0 /* DisplayStyleStore.swift */; };
 		4302392230923091001B4AE0 /* StylePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302392130923091001B4AE0 /* StylePreview.swift */; };
+		439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90D3096BFF3002D875E /* GlowStore.swift */; };
 		43FA56673090684D004AFD29 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA56663090684D004AFD29 /* MenuBarView.swift */; };
 		43FA566930906FD6004AFD29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566830906FD6004AFD29 /* SettingsView.swift */; };
 		43FA566B30907276004AFD29 /* WallpaperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566A30907276004AFD29 /* WallpaperManager.swift */; };
@@ -50,6 +51,7 @@
 		222692E3F82A38A810B173CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4302391F30923073001B4AE0 /* DisplayStyleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStyleStore.swift; sourceTree = "<group>"; };
 		4302392130923091001B4AE0 /* StylePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePreview.swift; sourceTree = "<group>"; };
+		439BB90D3096BFF3002D875E /* GlowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowStore.swift; sourceTree = "<group>"; };
 		43FA56663090684D004AFD29 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		43FA566830906FD6004AFD29 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		43FA566A30907276004AFD29 /* WallpaperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperManager.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				43FA566A30907276004AFD29 /* WallpaperManager.swift */,
 				43FA566C309074CB004AFD29 /* AdAudioPlayer.swift */,
 				4302391F30923073001B4AE0 /* DisplayStyleStore.swift */,
+				439BB90D3096BFF3002D875E /* GlowStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				4302392030923073001B4AE0 /* DisplayStyleStore.swift in Sources */,
 				22CFAD141CD71B4BD73A3151 /* LyricsService.swift in Sources */,
 				6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */,
+				439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */,
 				43FA566930906FD6004AFD29 /* SettingsView.swift in Sources */,
 				D051F8EDE6000529AE2C9113 /* NowPlayingDetector.swift in Sources */,
 				07CB1B9C79D8F6CBEC360080 /* NowPlayingViewModel.swift in Sources */,
