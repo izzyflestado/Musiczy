@@ -9,6 +9,7 @@ final class GlowStore: ObservableObject {
     static let shared = GlowStore()
 
     @Published private(set) var image: NSImage?
+    @Published private(set) var revision = 0
 
     /// Room around the cover so the blur can fade out completely (grows with the blur radius).
     static var padding: CGFloat { ceil(LockStyle.compactGlowBlur * 3) }
@@ -21,7 +22,7 @@ final class GlowStore: ObservableObject {
     /// Call once at launch. Re-makes the glow whenever the song (or its cover) changes.
     func start() {
         guard cancellable == nil else { return }
-        cancellable = NowPlayingViewModel.shared.$song
+        cancellable = LockSongGate.shared.$song
             .receive(on: DispatchQueue.main)
             .sink { [weak self] song in self?.update(song) }
     }
@@ -35,6 +36,7 @@ final class GlowStore: ObservableObject {
         guard song.id != lastID else { return }
         lastID = song.id
         image = render(art)
+        revision += 1 
     }
 
     private func render(_ art: NSImage) -> NSImage? {

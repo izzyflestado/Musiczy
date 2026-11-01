@@ -31,11 +31,15 @@ final class WallpaperManager {
         // If a previous run was killed while the wallpaper was swapped, put the original back first.
         restore()
 
+        // Lock and unlock still wait 0.4 s. A song change while locked is handled right away.
+        let lockState = LockScreenController.shared.$isLocked
+            .removeDuplicates()
+            .debounce(for: .milliseconds(400), scheduler: DispatchQueue.main)
+
         cancellable = Publishers.CombineLatest(
-            LockScreenController.shared.$isLocked,
-            NowPlayingViewModel.shared.$song
+            lockState,
+            NowPlayingViewModel.shared.$song.receive(on: DispatchQueue.main)
         )
-        .debounce(for: .milliseconds(400), scheduler: DispatchQueue.main)
         .sink { [weak self] locked, song in
             self?.update(locked: locked, song: song)
         }
@@ -52,9 +56,13 @@ final class WallpaperManager {
         }
         guard let art = song.artwork, song.title != "Nothing playing" else { return }
 
-        let key = "\(song.title)|\(song.artist)|\(song.album)"
-        guard !applied || key != lastKey else { return }   // this song is already showing
-        apply(art, key: key)
+        let key = LockSongGate.key(song)
+        if !applied || key != lastKey {           // skip if this song is already showing
+            apply(art, key: key)
+        }
+
+        // Tell the lock screen this song's wallpaper is in place, so the card can change now.
+        LockSongGate.shared.wallpaperReady(key: key)
     }
 
     // MARK: - Swapping the wallpaper

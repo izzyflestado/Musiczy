@@ -17,8 +17,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.makeKeyAndOrderFront(nil)
         NSApp.activate()
         WindowManager.shared.setup(window)
+        LockSongGate.shared.start()  
         WallpaperManager.shared.start()
-        GlowStore.shared.start() 
+        GlowStore.shared.start()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

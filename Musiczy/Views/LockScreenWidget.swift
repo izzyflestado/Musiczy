@@ -176,9 +176,10 @@ struct LockScreenRoot: View {
     @State private var lastFull: CGRect? = nil
     @Namespace private var coverNS
     @ObservedObject private var activity = WindowManager.shared.activity
+    @ObservedObject private var gate = LockSongGate.shared
     
     private var hasSong: Bool {
-        let title = viewModel.song.title
+        let title = gate.song.title
         return !title.isEmpty && title != "Nothing playing"
     }
     
@@ -248,16 +249,11 @@ struct LockScreenRoot: View {
             if !on { withAnimation(.easeInOut(duration: 0.5)) { atFull = false } }
         }
         .overlay {
-            if controller.isLocked && hasSong, let art = viewModel.song.artwork,
+            if controller.isLocked && hasSong, let art = gate.song.artwork,
                let rect = atFull
                    ? (frames["full"] ?? (controller.isFullscreen ? nil : lastFull))
                    : frames["compact"] {
-                Color.clear
-                    .overlay {
-                        Image(nsImage: art)
-                            .resizable()
-                            .scaledToFill()
-                    }
+                CrossfadeImage(image: art)
                     .frame(width: rect.width, height: rect.height)
                     .clipShape(RoundedRectangle(cornerRadius: LockStyle.coverSize * LockStyle.coverRounding, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: atFull ? 30 : 10, y: 5)
@@ -276,6 +272,7 @@ struct LockCard: View {
     let expanded: Bool
     let coverNS: Namespace.ID
     @ObservedObject private var glowStore = GlowStore.shared
+    @ObservedObject private var gate = LockSongGate.shared        // add this line
 
     private var innerWidth: CGFloat { LockStyle.cardWidth - LockStyle.inset * 2 }
     
@@ -336,7 +333,7 @@ struct LockCard: View {
     private let artistMargin: CGFloat = 12    // gap between the card's left edge and the artist
     // Just the artist
     private var subtitle: String {
-        viewModel.song.artist
+        gate.song.artist
     }
     private let topMargin: CGFloat = 12       // gap between the card's top edge and the text when expanded
 
@@ -345,12 +342,13 @@ struct LockCard: View {
         expanded ? headerWidth - 2 * 56
                  : LockStyle.cardWidth - LockStyle.inset * 2
     }
+    
 
     private var header: some View {
         ZStack(alignment: .top) {
-            // Title (the album joins it when expanded)
-            VStack(spacing: 3) {
-                Text(viewModel.song.title)
+            // Title
+            FadeSwap(gate.song.title) { text in
+                Text(text)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
@@ -360,15 +358,17 @@ struct LockCard: View {
             .frame(width: titleWidth)
             .offset(y: expanded ? topMargin : 19)      // compact: sits lower, above the cover
 
-            // Artist (and album when expanded): always right below the title
-            Text(subtitle)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(.white.opacity(0.75))
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .multilineTextAlignment(.center)
-                .frame(width: titleWidth)
-                .offset(y: expanded ? topMargin + 27 : 46)
+            // Artist: always right below the title
+            FadeSwap(subtitle) { text in
+                Text(text)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.75))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            .multilineTextAlignment(.center)
+            .frame(width: titleWidth)
+            .offset(y: expanded ? topMargin + 27 : 46)
 
             // Expand icon: top-right corner, opens the fullscreen view.
             Button {
@@ -430,7 +430,7 @@ struct LockCard: View {
     private var glow: some View {
         Color.clear
             .overlay {
-                if let art = viewModel.song.artwork {
+                if let art = gate.song.artwork {
                     Image(nsImage: art)
                         .resizable()
                         .scaledToFill()
@@ -445,14 +445,12 @@ struct LockCard: View {
     }
 
     /// Glow shaped like the cover, used when the card is compact.
-    /// It's a ready-made blurred picture from GlowStore, not a live blur effect.
+    /// Same CrossfadeImage as the main player's background, so it fades the same way.
     private var coverGlow: some View {
         let side = GlowStore.side
         return Group {
             if let glow = glowStore.image {
-                Image(nsImage: glow)
-                    .resizable()
-                    .interpolation(.high)
+                CrossfadeImage(image: glow)
                     .frame(width: side, height: side)
                     .opacity(LockStyle.compactGlowOpacity)
             }
