@@ -4,63 +4,115 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @AppStorage(SettingsKey.replaceLockWallpaper) private var replaceWallpaper = false
-    @AppStorage(SettingsKey.adFilePath) private var adFilePath = ""
     @AppStorage(SettingsKey.adVolume) private var adVolume = 0.8
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
-    @State private var pickingFile = false
+    @State private var pickingFiles = false
 
-    private var adFileName: String {
-        adFilePath.isEmpty ? "No file selected"
-                           : URL(fileURLWithPath: adFilePath).lastPathComponent
-    }
+    // ===== LIST SIZE: change these numbers =====
+    private let rowHeight: CGFloat = 30
+    private let maxListHeight: CGFloat = 150     // the list scrolls after this
+    // ===========================================
 
     var body: some View {
         Form {
             Section("Display style") {
                 DisplayStylePicker()
+
+                Text("Click a style to switch the player right away. The Art and Lyrics buttons in the player change it too, and your choice is remembered.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
+                Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
-            Section("Ads") {
-                LabeledContent("Ad sound") {
-                    Text(adFileName)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
+            Section("Alternative music during ads") {
+                if adPlayer.paths.isEmpty {
+                    Text("No files added")
                         .foregroundStyle(.secondary)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            ForEach(adPlayer.paths, id: \.self) { path in
+                                adRow(path)
+                            }
+                        }
+                    }
+                    .frame(height: min(CGFloat(adPlayer.paths.count) * rowHeight, maxListHeight))
                 }
 
                 HStack {
-                    Button("Choose File…") { pickingFile = true }
-                    if !adFilePath.isEmpty {
-                        Button(adPlayer.isPreviewing ? "Stop" : "Preview") {
-                            adPlayer.togglePreview()
-                        }
-                        Button("Remove") {
-                            adPlayer.stopPreview()
-                            adFilePath = ""
-                        }
+                    Button("Add Files…") { pickingFiles = true }
+                    if !adPlayer.paths.isEmpty {
+                        Button("Remove All") { adPlayer.removeAll() }
                     }
                 }
 
                 Slider(value: $adVolume, in: 0...1) { Text("Volume") }
 
-                Text("Spotify is muted during ads and this file plays on a loop until the ad ends. Any audio file works, such as MP3, M4A, WAV or FLAC.")
+                Text("Spotify is muted during ads and Musiczy plays a random file from this list. When a file ends it picks another one, until the ad is over. The same file doesn't play twice in a row. Any audio file works, such as MP3, M4A, WAV or FLAC.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
         .frame(width: 560, height: 700)
-        .fileImporter(isPresented: $pickingFile, allowedContentTypes: [.audio]) { result in
-            if case .success(let url) = result {
+        .fileImporter(isPresented: $pickingFiles,
+                      allowedContentTypes: [.audio],
+                      allowsMultipleSelection: true) { result in
+            if case .success(let urls) = result {
                 adPlayer.stopPreview()
-                adFilePath = url.path
+                adPlayer.add(urls)
             }
         }
         .onChange(of: adVolume) { _, _ in adPlayer.applyVolume() }
+        .onDisappear { adPlayer.stopPreview() }
+    }
+
+    /// One file in the list: name, preview button and remove button.
+    private func adRow(_ path: String) -> some View {
+        let exists = FileManager.default.fileExists(atPath: path)
+        let previewing = adPlayer.previewingPath == path
+
+        return HStack(spacing: 10) {
+            Image(systemName: "music.note")
+                .foregroundStyle(.secondary)
+
+            Text(URL(fileURLWithPath: path).lastPathComponent)
+                .lineLimit(1)
+                .truncationMode(.middle)
+
+            Spacer()
+
+            if !exists {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.yellow)
+                    .help("File not found. It is skipped during ads.")
+            }
+
+            Button {
+                adPlayer.togglePreview(path)
+            } label: {
+                Image(systemName: previewing ? "stop.fill" : "play.fill")
+            }
+            .buttonStyle(.borderless)
+            .disabled(!exists)
+            .help(previewing ? "Stop" : "Preview")
+
+            Button {
+                adPlayer.remove(path)
+            } label: {
+                Image(systemName: "minus.circle.fill")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.borderless)
+            .help("Remove from the list")
+        }
+        .frame(height: rowHeight)
     }
 }
 
