@@ -24,6 +24,8 @@ final class NowPlayingViewModel: ObservableObject {
     @Published var isAd = false
     var pausePollingUntil = Date.distantPast
     var positionStamp = Date()   // when `position` was last set
+    private var showingAdFile = false                // true while the ad music is what the screen shows
+    private var adMusicObserver: AnyCancellable?
     
     private var lastTrackKey = ""
     private var currentArtwork: NSImage?
@@ -43,6 +45,12 @@ final class NowPlayingViewModel: ObservableObject {
         }
         detector.start()
         
+        // When the ad music changes (a new file, or its name and cover finished loading), update right away.
+                adMusicObserver = AdAudioPlayer.shared.$current
+                    .dropFirst()
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] _ in self?.refresh() }
+        
         // Also check right now, in case a song is already playing.
         refresh()
         // Check once per second so the progress bar moves.
@@ -55,16 +63,24 @@ final class NowPlayingViewModel: ObservableObject {
     func refresh() {
         guard Date() >= pausePollingUntil else { return }
 
-        guard let track = PlayerHub.currentTrack() else {
-            AdAudioPlayer.shared.trackLost()    
+        guard let reported = PlayerHub.currentTrack() else {
+            AdAudioPlayer.shared.trackLost()
             updateIdleHint()
             return
         }
-        
+
+        SpotifyBridge.setAdMuted(reported.isAd)
+        AdAudioPlayer.shared.update(isAd: reported.isAd, isPlaying: reported.isPlaying)
+
+        // The ad file's name and cover are still loading (a few milliseconds): wait for them.
+        if reported.isAd, AdAudioPlayer.shared.isPreparing { return }
+
+        // During an ad, show the ad music instead, like a normal song.
+        let track = adMusicTrack(replacing: reported) ?? reported
+        showingAdFile = track.sourceID == AdAudioPlayer.sourceID
+
         isPlaying = track.isPlaying
         isAd = track.isAd
-        SpotifyBridge.setAdMuted(track.isAd)
-        AdAudioPlayer.shared.update(isAd: track.isAd, isPlaying: track.isPlaying)
         
         // Update the progress bar (runs every second, before the song-change check)
         let newProgress = track.duration > 0
@@ -104,11 +120,19 @@ final class NowPlayingViewModel: ObservableObject {
         // New song: clear old lyrics and look up the new ones.
         lyrics = []
         currentLyricIndex = -1
-        LyricsService.fetchLocalFirst(title: track.title, artist: track.artist,
-                                      duration: track.duration) { [weak self] lines in
+        let gotLyrics: ([LyricLine]) -> Void = { [weak self] lines in
             guard let self, self.lastTrackKey == key else { return }
             self.lyrics = lines
             self.updateLyricIndex()
+        }
+        if showingAdFile, let path = AdAudioPlayer.shared.current?.path {
+            // The ad music: we know the exact file, so look next to it.
+            LyricsService.fetchForFile(URL(fileURLWithPath: path), title: track.title,
+                                       artist: track.artist, duration: track.duration,
+                                       completion: gotLyrics)
+        } else {
+            LyricsService.fetchLocalFirst(title: track.title, artist: track.artist,
+                                          duration: track.duration, completion: gotLyrics)
         }
         
         // Artwork that came as raw image data (Apple Music and other non-Spotify players).
@@ -270,12 +294,20 @@ final class NowPlayingViewModel: ObservableObject {
     }
     
     func nextTrack() {
-        PlayerHub.send(.next)
+        if showingAdFile {
+            AdAudioPlayer.shared.skipToNext()      // another random ad file
+        } else {
+            PlayerHub.send(.next)
+        }
         refreshSoon()
     }
     
     func previousTrack() {
-        PlayerHub.send(.previous)
+        if showingAdFile {
+            AdAudioPlayer.shared.restart()         // start the ad file again
+        } else {
+            PlayerHub.send(.previous)
+        }
         refreshSoon()
     }
     
@@ -287,7 +319,7 @@ final class NowPlayingViewModel: ObservableObject {
         positionStamp = Date()
         progress = f
         updateLyricIndex()
-        PlayerHub.seek(to: position)
+        seekPlayer(to: position)
         refreshSoon()
     }
     
@@ -300,8 +332,28 @@ final class NowPlayingViewModel: ObservableObject {
         positionStamp = Date()
         progress = t / duration
         updateLyricIndex()
-        PlayerHub.seek(to: t)
+        seekPlayer(to: t)
         refreshSoon()
+    }
+    
+    /// While an ad plays and the ad music is playing, describes the ad music as a normal track.
+    private func adMusicTrack(replacing ad: PlayerTrack) -> PlayerTrack? {
+        guard ad.isAd, let file = AdAudioPlayer.shared.current else { return nil }
+        return PlayerTrack(sourceID: AdAudioPlayer.sourceID, sourceName: "Ad music",
+                           title: file.title, artist: file.artist, album: file.album,
+                           artworkURL: nil, artworkData: file.artworkData,
+                           isPlaying: ad.isPlaying,
+                           position: AdAudioPlayer.shared.position,
+                           duration: file.duration, isAd: false)
+    }
+
+    /// Seeks whatever the screen is showing: the ad music during an ad, otherwise the music player.
+    private func seekPlayer(to seconds: Double) {
+        if showingAdFile {
+            AdAudioPlayer.shared.seek(to: seconds)
+        } else {
+            PlayerHub.seek(to: seconds)
+        }
     }
     
     /// Gives the player a moment to react, then updates the screen.

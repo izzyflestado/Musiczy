@@ -16,6 +16,7 @@
 		439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90D3096BFF3002D875E /* GlowStore.swift */; };
 		439BB9103096C34A002D875E /* LockSongsGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90F3096C34A002D875E /* LockSongsGate.swift */; };
 		439BB9123096C58E002D875E /* FadeSwap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB9113096C58E002D875E /* FadeSwap.swift */; };
+		43D74A8A3098C64B001FD2A6 /* AdFileMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74A893098C64B001FD2A6 /* AdFileMetadata.swift */; };
 		43FA56673090684D004AFD29 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA56663090684D004AFD29 /* MenuBarView.swift */; };
 		43FA566930906FD6004AFD29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566830906FD6004AFD29 /* SettingsView.swift */; };
 		43FA566B30907276004AFD29 /* WallpaperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FA566A30907276004AFD29 /* WallpaperManager.swift */; };
@@ -56,6 +57,7 @@
 		439BB90D3096BFF3002D875E /* GlowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowStore.swift; sourceTree = "<group>"; };
 		439BB90F3096C34A002D875E /* LockSongsGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSongsGate.swift; sourceTree = "<group>"; };
 		439BB9113096C58E002D875E /* FadeSwap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeSwap.swift; sourceTree = "<group>"; };
+		43D74A893098C64B001FD2A6 /* AdFileMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdFileMetadata.swift; sourceTree = "<group>"; };
 		43FA56663090684D004AFD29 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		43FA566830906FD6004AFD29 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		43FA566A30907276004AFD29 /* WallpaperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperManager.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				4302391F30923073001B4AE0 /* DisplayStyleStore.swift */,
 				439BB90D3096BFF3002D875E /* GlowStore.swift */,
 				439BB90F3096C34A002D875E /* LockSongsGate.swift */,
+				43D74A893098C64B001FD2A6 /* AdFileMetadata.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				F908DBD9E494818E65F6D1BB /* PlayerSources.swift in Sources */,
 				DF8EDD73182E5B9C10D96679 /* Song.swift in Sources */,
 				4A5429F42086544FB6B74715 /* SpotifyBridge.swift in Sources */,
+				43D74A8A3098C64B001FD2A6 /* AdFileMetadata.swift in Sources */,
 				439BB9123096C58E002D875E /* FadeSwap.swift in Sources */,
 				C48E85130C0888525DD720FD /* SystemNowPlaying.swift in Sources */,
 			);

@@ -7,20 +7,44 @@ extension SettingsKey {
     static let adVolume = "adVolume"
 }
 
+/// What the ad file that is playing right now is.
+struct AdTrackInfo {
+    let path: String
+    let title: String
+    let artist: String
+    let album: String
+    let artworkData: Data?
+    let duration: Double
+}
+
 /// Plays random files from the user's list while Spotify is playing an ad.
 final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     static let shared = AdAudioPlayer()
+
+    /// Tells the player screen that a track comes from the ad music.
+    static let sourceID = "adfile"
 
     /// The files the user added, in the order they were added.
     @Published private(set) var paths: [String] = []
     /// The file being previewed from Settings (nil = no preview).
     @Published private(set) var previewingPath: String?
+    /// The ad file playing right now, with its tags and cover (nil = none).
+    @Published private(set) var current: AdTrackInfo?
 
     private var player: AVAudioPlayer?
     private var lastPlayedPath = ""
     private var failed = Set<String>()        // files that could not be opened, so we don't retry every second
     private var adActive = false
+    private var adPlaying = false             // is Spotify's ad playing (not paused)?
     private var lastAdTick = Date.distantPast
+    private var preparingPath: String?        // the file whose tags and cover are still loading
+    private var infoCache: [String: AdTrackInfo] = [:]
+
+    /// True for a few milliseconds while a new file's name and cover load.
+    var isPreparing: Bool { preparingPath != nil }
+
+    /// Where the ad file is, in seconds.
+    var position: Double { player?.currentTime ?? 0 }
 
     private var volume: Float {
         Float(UserDefaults.standard.object(forKey: SettingsKey.adVolume) as? Double ?? 0.8)
@@ -45,6 +69,7 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     func update(isAd: Bool, isPlaying: Bool) {
         if isAd {
             adActive = true
+            adPlaying = isPlaying
             lastAdTick = Date()
 
             // An ad takes over from a preview.
@@ -74,6 +99,27 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         stopSound()
     }
 
+    // MARK: - Used by the player screen during an ad
+
+    /// Seeks the ad file (progress bar, or a tapped lyric line).
+    func seek(to seconds: Double) {
+        guard adActive, let p = player else { return }
+        p.currentTime = min(max(seconds, 0), max(p.duration - 0.5, 0))
+    }
+
+    /// The next button during an ad: jump to another random file.
+    func skipToNext() {
+        guard adActive else { return }
+        playRandom()
+        if !adPlaying { player?.pause() }
+    }
+
+    /// The previous button during an ad: start the current file again.
+    func restart() {
+        guard adActive else { return }
+        player?.currentTime = 0
+    }
+
     // MARK: - Used by the Settings window
 
     func add(_ urls: [URL]) {
@@ -92,6 +138,7 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         if previewingPath == path { stopSound() }
         paths.removeAll { $0 == path }
         failed.remove(path)
+        infoCache.removeValue(forKey: path)
         save()
     }
 
@@ -99,6 +146,7 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         stopSound()
         paths = []
         failed.removeAll()
+        infoCache.removeAll()
         save()
     }
 
@@ -134,6 +182,8 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         player?.stop()
         player = nil
         previewingPath = nil
+        preparingPath = nil
+        if current != nil { current = nil }
     }
 
     /// Picks a random file (never the same one twice in a row, if there are others) and plays it.
@@ -146,7 +196,9 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         let pool = usable.count > 1 ? usable.filter { $0 != lastPlayedPath } : usable
         guard let pick = pool.randomElement() else { return }
 
-        if !start(pick) {
+        if start(pick) {
+            loadInfo(for: pick)
+        } else {
             failed.insert(pick)
             playRandom()                   // try another one
         }
@@ -170,6 +222,47 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
             print("Ad audio error:", error)
             return false
         }
+    }
+
+    // MARK: - Tags and cover of the file that is playing
+
+    private func loadInfo(for path: String) {
+        // Played before: use what we already read.
+        if let cached = infoCache[path] {
+            current = cached
+            return
+        }
+
+        preparingPath = path
+        let duration = player?.duration ?? 0
+        let url = URL(fileURLWithPath: path)
+
+        Task { [weak self] in
+            let tags = await AdFileMetadata.read(url)
+            await MainActor.run { self?.finishInfo(path: path, duration: duration, tags: tags) }
+        }
+
+        // Safety: if reading is slow (a network drive, say), show the file name after 2 seconds.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let self, self.preparingPath == path else { return }
+            self.finishInfo(path: path, duration: duration, tags: AdFileTags())
+        }
+    }
+
+    private func finishInfo(path: String, duration: Double, tags: AdFileTags) {
+        let name = URL(fileURLWithPath: path).deletingPathExtension().lastPathComponent
+        let info = AdTrackInfo(path: path,
+                               title: tags.title.isEmpty ? name : tags.title,
+                               artist: tags.artist,
+                               album: tags.album,
+                               artworkData: tags.artwork,
+                               duration: duration)
+
+        if infoCache.count > 20 { infoCache.removeAll() }   // the covers can be big
+        infoCache[path] = info
+
+        if preparingPath == path { preparingPath = nil }
+        if adActive, player != nil, lastPlayedPath == path { current = info }
     }
 
     // MARK: - AVAudioPlayerDelegate

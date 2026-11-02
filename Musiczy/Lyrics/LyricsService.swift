@@ -20,6 +20,32 @@ enum LyricsService {
         }
     }
 
+    /// For a file we already know (the ad music): .lrc next to it, then LRCLIB, then lyrics inside a FLAC.
+    /// Without an artist tag the online search is skipped, because a title alone often finds the wrong song.
+    static func fetchForFile(_ file: URL, title: String, artist: String, duration: Double,
+                             completion: @escaping ([LyricLine]) -> Void) {
+        DispatchQueue.global(qos: .utility).async {
+            if let side = LocalLyrics.sidecarOnly([file]) {
+                DispatchQueue.main.async { completion(side) }
+                return
+            }
+
+            func embedded() {
+                DispatchQueue.global(qos: .utility).async {
+                    let lines = LocalLyrics.embeddedOnly([file], artist: artist) ?? []
+                    DispatchQueue.main.async { completion(lines) }
+                }
+            }
+
+            guard !artist.isEmpty else { embedded(); return }
+
+            LyricsService.fetch(title: title, artist: artist, duration: duration) { online in
+                if !online.isEmpty { completion(online); return }
+                embedded()
+            }
+        }
+    }
+
     private static func makeRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         // LRCLIB asks clients to identify themselves.
