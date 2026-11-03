@@ -95,6 +95,7 @@ There is no account, analytics or tracking.
 
 - Visual bug during ads
 - Visual bug - Sometimes does not switch cover art when changing songs (might do this if tabbed out).
+- Visual bug - White streak on ambient light skipping
 
 ## Known limitations
 
@@ -104,8 +105,8 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
-- [x] Add feature: Ambient border shine
 - [ ] Add mode state: Option for 1 word per line mode
+- [x] Add feature: Ambient border shine
 - [x] Fix: Detert cover art for alternate file for ad
 - [x] Update: Ad alt file feature to choose more than 1 song and random selec
 - [x] Add feature: Clicking on music widget on menu bar should take to the full screen app
