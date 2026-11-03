@@ -5,6 +5,8 @@ import UniformTypeIdentifiers
 struct SettingsView: View {
     @AppStorage(SettingsKey.replaceLockWallpaper) private var replaceWallpaper = false
     @AppStorage(SettingsKey.adVolume) private var adVolume = 0.8
+    @AppStorage(SettingsKey.ambientShine) private var ambientShine = false              // add if missing
+    @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true     // add this one
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
     @State private var pickingFiles = false
 
@@ -22,8 +24,11 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-
-            Section("Lock screen") {
+            
+            Section("Background") {
+                Toggle("Blurred cover background", isOn: $blurredBackground)
+                Toggle("Ambient border shine", isOn: $ambientShine)
+            };            Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
                 Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
                     .font(.caption)

@@ -21,6 +21,8 @@ struct NowPlayingScreen: View {
     @State private var textOpacity: Double = 1
     @State private var browseFocus: CGFloat? = nil   // nil = follow the song
     @State private var browseReset: DispatchWorkItem? = nil
+    @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
+    @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
 
     
     // The display style (Art/Lyrics + its 3 styles). The main window shares it with Settings
@@ -79,7 +81,7 @@ struct NowPlayingScreen: View {
             // 1. Blurred background made from the same artwork
             Color.black
                 .overlay {
-                    if let artwork = song.artwork {
+                    if let artwork = song.artwork, blurredBackground {      // CHANGED: added ", blurredBackground"
                         CrossfadeImage(image: artwork)
                             .blur(radius: 60)
                             .saturation(1.6)
@@ -94,23 +96,33 @@ struct NowPlayingScreen: View {
                 }
                 .clipped()
                 .ignoresSafeArea()
-            
+                .animation(.easeInOut(duration: 0.6), value: blurredBackground)   // NEW line
             
             // 1b. Full-screen drifting cover (alternate art mode)
             Color.clear
                 .overlay {
-                    if fullOn, let artwork = song.artwork {
+                    if fullOn, blurredBackground, let artwork = song.artwork {   // CHANGED: added "blurredBackground,"
                         DriftingImage(image: viewModel.hiResArtwork ?? artwork)
                             .transition(.opacity)
                     }
                 }
                 .clipped()
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.6), value: fullOn)
+                .animation(.easeInOut(duration: 0.6), value: fullOn && blurredBackground)   // CHANGED: was "value: fullOn"
             
             // 2. Dark overlay so text stays readable
             Color.black.opacity(fullOn ? 0.40 : 0.30)
                 .ignoresSafeArea()
+            
+            // 2b. Ambient border shine
+            Group {
+                if ambientShine {
+                    AmbientBorderShine(artwork: song.artwork, songID: song.id)
+                }
+            }
+            .animation(.easeInOut(duration: 0.6), value: ambientShine)
+            .ignoresSafeArea()
+            .allowsHitTesting(false)
             
             // Clicking empty space sends the lyrics back to the current line
             Color.clear
