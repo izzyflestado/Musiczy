@@ -66,8 +66,39 @@ enum CoverPalette {
 
         // Boost them a little: glows look best vivid and bright on black.
         return picked.map {
-            Color(hue: $0.h, saturation: min(1, max($0.s, 0.7)), brightness: min(1, max($0.v, 0.85)))
+            Color(hue: $0.h, saturation: min(1, max($0.s, 0.6)), brightness: min(1, max($0.v, 0.75)))
         }
+    }
+    
+    /// The cover's average color, made very dark, for a plain background.
+    /// `level` is how bright the result is: 0 = black, 1 = full brightness.
+    static func darkAverage(from image: NSImage, level: Double = 0.16) -> Color {
+        guard let cg = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return .black }
+
+        let side = 16
+        var pixels = [UInt8](repeating: 0, count: side * side * 4)
+        let drawn = pixels.withUnsafeMutableBytes { buffer -> Bool in
+            guard let ctx = CGContext(data: buffer.baseAddress, width: side, height: side,
+                                      bitsPerComponent: 8, bytesPerRow: side * 4,
+                                      space: CGColorSpaceCreateDeviceRGB(),
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+            else { return false }
+            ctx.interpolationQuality = .medium
+            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: side, height: side))
+            return true
+        }
+        guard drawn else { return .black }
+
+        var r = 0.0, g = 0.0, b = 0.0
+        for i in stride(from: 0, to: pixels.count, by: 4) {
+            r += Double(pixels[i])
+            g += Double(pixels[i + 1])
+            b += Double(pixels[i + 2])
+        }
+        let n = Double(side * side) * 255
+        let (h, s, _) = hsv(r / n, g / n, b / n)
+        // Averages come out dull, so give the color a little more saturation before darkening it.
+        return Color(hue: h, saturation: min(1, s * 1.3), brightness: level)
     }
 
     private static func hsv(_ r: Double, _ g: Double, _ b: Double) -> (h: Double, s: Double, v: Double) {

@@ -21,6 +21,9 @@ struct NowPlayingScreen: View {
     @State private var textOpacity: Double = 1
     @State private var browseFocus: CGFloat? = nil   // nil = follow the song
     @State private var browseReset: DispatchWorkItem? = nil
+    @State private var darkTint: Color = .black
+    private var baseColor: Color { blurredBackground ? .black : darkTint }
+    private let darkTintLevel: Double = 0.16     // how dark the tint is: 0 = black, higher = lighter
     @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
     @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
 
@@ -84,7 +87,7 @@ struct NowPlayingScreen: View {
         
         ZStack {
             // 1. Blurred background made from the same artwork
-            Color.black
+            baseColor
                 .overlay {
                     if let artwork = song.artwork, blurredBackground {      // CHANGED: added ", blurredBackground"
                         CrossfadeImage(image: artwork)
@@ -182,6 +185,20 @@ struct NowPlayingScreen: View {
                 }
             }
         }
+        
+        .task(id: viewModel.song.id) {
+            let level = darkTintLevel
+            guard let art = viewModel.song.artwork else {
+                withAnimation(.easeInOut(duration: 1.0)) { darkTint = .black }
+                return
+            }
+            let tint = await Task.detached(priority: .utility) {
+                CoverPalette.darkAverage(from: art, level: level)
+            }.value
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeInOut(duration: 1.0)) { darkTint = tint }
+        }
+        
         .onChange(of: viewModel.duration) { _, new in
             if textOpacity == 1 { shownDuration = new }
         }
