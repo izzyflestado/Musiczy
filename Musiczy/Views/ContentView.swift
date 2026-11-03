@@ -71,6 +71,11 @@ struct NowPlayingScreen: View {
     private let artSizeCentered: CGFloat = 380  // art mode
     private let artSizeWithLyrics: CGFloat = 380 // lyrics mode
     private let modeAnimation = Animation.timingCurve(0.65, 0, 0.35, 1, duration: 0.8)
+    // ===== COVER GLOW (only when the blurred background is off): change these numbers =====
+    private let coverGlowBlur: CGFloat = 80       // lower = tighter glow
+    private let coverGlowScale: CGFloat = 1.10    // how far it spreads past the cover
+    private let coverGlowOpacity: Double = 0.7    // 0 = no glow
+    // =======================================================================================
     var onScroll: ((CGFloat) -> Void)?
     // =========================================================================
     
@@ -266,6 +271,24 @@ struct NowPlayingScreen: View {
         .help(help)   // native hover tooltip
     }
     
+    /// Soft glow behind the centered cover. Only exists while the blurred background is off.
+    private func coverGlow(_ artwork: NSImage, size: CGFloat, scale s: CGFloat) -> some View {
+        Group {
+            if !blurredBackground {
+                CrossfadeImage(image: artwork)
+                    .frame(width: size, height: size)
+                    .clipShape(RoundedRectangle(cornerRadius: 24 * s, style: .continuous))
+                    .scaleEffect(coverGlowScale)
+                    .blur(radius: coverGlowBlur * s)
+                    .saturation(1.6)
+                    .opacity(fullOn ? 0 : coverGlowOpacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.6), value: blurredBackground)
+        .animation(.easeInOut(duration: 0.6), value: fullOn)
+        .allowsHitTesting(false)
+    }
+    
     // MARK: - Player column (buttons, art, text, progress, controls)
     
     private func playerColumn(song: Song, size: CGFloat) -> some View {
@@ -286,6 +309,7 @@ struct NowPlayingScreen: View {
                     .blur(radius: fullOn ? 30 : 0)
                     .opacity(fullOn ? 0 : 1)
                     .animation(.easeInOut(duration: 0.6), value: fullOn)
+                    .background { coverGlow(artwork, size: size, scale: s) }
                     .coverSlot(coverNamespace, isSource: !fullOn)
             }
             
