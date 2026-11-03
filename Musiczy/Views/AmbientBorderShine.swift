@@ -7,7 +7,10 @@ enum ShineStyle {
     static let turnSeconds: Double = 16      // one lap of the cover colors around the border
     static let sweepSeconds: Double = 9      // one lap of the white highlight (runs the other way)
     static let fadeSeconds: Double = 1.2     // color change between songs
-    static let sweepOpacity: Double = 1.0    // 0 = no white highlight
+    static let sweepOpacity: Double = 1.0
+    static let sweepWidth: CGFloat = 40      // NEW: thickness of the highlight band along the edge
+    static let sweepBlur: CGFloat = 10       // NEW: lower = sharper highlight
+    static let sweepLength: Double = 0.2     // how much of the border the highlight covers: 0.1 = short, 0.3 = long
 
     // Three layers, from a wide soft glow to a thin crisp line
     static let softWidth: CGFloat = 40
@@ -35,10 +38,11 @@ struct AmbientBorderShine: View {
             let d = hypot(size.width, size.height)    // big enough to cover the screen at any angle
 
             ZStack {
-                // The cover's colors, turning slowly. The turning layer stays; only the gradient inside swaps.
+                // The cover's colors, turning slowly, as a soft glow
                 ZStack {
                     if !colors.isEmpty {
                         AngularGradient(gradient: Gradient(colors: colors + [colors[0]]), center: .center)
+                            .saturation(1.3)
                             .id(version)
                             .transition(.opacity)
                     }
@@ -48,23 +52,26 @@ struct AmbientBorderShine: View {
                 .rotationEffect(.degrees(spin ? 360 : 0))
                 .animation(.linear(duration: ShineStyle.turnSeconds).repeatForever(autoreverses: false),
                            value: spin)
+                .frame(width: size.width, height: size.height)
+                .mask { RingMask(size: size) }
 
-                // A white highlight running around the border the other way
+                // White highlight running the other way, with its own tighter ring so it stays sharper
                 AngularGradient(gradient: Gradient(stops: [
                     .init(color: .white.opacity(0), location: 0.00),
-                    .init(color: .white.opacity(0), location: 0.68),
-                    .init(color: .white.opacity(ShineStyle.sweepOpacity), location: 0.84),
+                    .init(color: .white.opacity(0), location: 1 - ShineStyle.sweepLength),
+                    .init(color: .white.opacity(ShineStyle.sweepOpacity), location: 1 - ShineStyle.sweepLength / 2),
                     .init(color: .white.opacity(0), location: 1.00)
                 ]), center: .center)
                 .frame(width: d, height: d)
                 .rotationEffect(.degrees(spin ? -360 : 0))
                 .animation(.linear(duration: ShineStyle.sweepSeconds).repeatForever(autoreverses: false),
                            value: spin)
+                .frame(width: size.width, height: size.height)
+                .mask { SweepMask(size: size) }
                 .opacity(colors.isEmpty ? 0 : 1)
                 .animation(.easeInOut(duration: ShineStyle.fadeSeconds), value: colors.isEmpty)
             }
             .frame(width: size.width, height: size.height)
-            .mask { RingMask(size: size) }       // only the border shows
         }
         .onAppear { spin = true }
         .task(id: songID) {
@@ -97,5 +104,17 @@ private struct RingMask: View {
         }
         .frame(width: size.width, height: size.height)
         .drawingGroup()
+    }
+}
+
+/// A tighter ring just for the white highlight, so it stays sharper than the soft glow.
+private struct SweepMask: View {
+    let size: CGSize
+
+    var body: some View {
+        Rectangle().strokeBorder(Color.white, lineWidth: ShineStyle.sweepWidth)
+            .blur(radius: ShineStyle.sweepBlur)
+            .frame(width: size.width, height: size.height)
+            .drawingGroup()
     }
 }
