@@ -104,7 +104,7 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
-- [ ] Add feature: Ambient border shine
+- [x] Add feature: Ambient border shine
 - [ ] Add mode state: Option for 1 word per line mode
 - [x] Fix: Detert cover art for alternate file for ad
 - [x] Update: Ad alt file feature to choose more than 1 song and random selec
