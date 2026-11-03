@@ -7,15 +7,15 @@ enum ShineStyle {
     static let turnSeconds: Double = 16      // one lap of the cover colors around the border
     static let sweepSeconds: Double = 9      // one lap of the white highlight (runs the other way)
     static let fadeSeconds: Double = 1.2     // color change between songs
-    static let sweepOpacity: Double = 0.6    // 0 = no white highlight
+    static let sweepOpacity: Double = 1.0    // 0 = no white highlight
 
     // Three layers, from a wide soft glow to a thin crisp line
-    static let softWidth: CGFloat = 90
-    static let softBlur: CGFloat = 70
-    static let softOpacity: Double = 0.55
-    static let midWidth: CGFloat = 24
-    static let midBlur: CGFloat = 16
-    static let midOpacity: Double = 0.85
+    static let softWidth: CGFloat = 40
+    static let softBlur: CGFloat = 45
+    static let softOpacity: Double = 0.8
+    static let midWidth: CGFloat = 16
+    static let midBlur: CGFloat = 14
+    static let midOpacity: Double = 1.0
     static let lineWidth: CGFloat = 2.5      // 0 = no crisp line
     static let lineInset: CGFloat = 5        // keeps the line off the very edge of the screen
 }
@@ -52,8 +52,8 @@ struct AmbientBorderShine: View {
                 // A white highlight running around the border the other way
                 AngularGradient(gradient: Gradient(stops: [
                     .init(color: .white.opacity(0), location: 0.00),
-                    .init(color: .white.opacity(0), location: 0.78),
-                    .init(color: .white.opacity(ShineStyle.sweepOpacity), location: 0.89),
+                    .init(color: .white.opacity(0), location: 0.68),
+                    .init(color: .white.opacity(ShineStyle.sweepOpacity), location: 0.84),
                     .init(color: .white.opacity(0), location: 1.00)
                 ]), center: .center)
                 .frame(width: d, height: d)
@@ -94,8 +94,6 @@ private struct RingMask: View {
             Rectangle().strokeBorder(Color.white, lineWidth: ShineStyle.midWidth)
                 .blur(radius: ShineStyle.midBlur)
                 .opacity(ShineStyle.midOpacity)
-            Rectangle().strokeBorder(Color.white, lineWidth: ShineStyle.lineWidth)
-                .padding(ShineStyle.lineInset)
         }
         .frame(width: size.width, height: size.height)
         .drawingGroup()

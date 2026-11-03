@@ -66,7 +66,7 @@ enum CoverPalette {
 
         // Boost them a little: glows look best vivid and bright on black.
         return picked.map {
-            Color(hue: $0.h, saturation: min(1, max($0.s, 0.55)), brightness: min(1, max($0.v, 0.85)))
+            Color(hue: $0.h, saturation: min(1, max($0.s, 0.7)), brightness: min(1, max($0.v, 0.85)))
         }
     }
 
