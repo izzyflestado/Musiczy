@@ -106,6 +106,7 @@ There is no account, analytics or tracking.
 ## Roadmap
 
 - [ ] Add mode state: Option for 1 word per line mode
+- [ ] Make the sweep and ambient light go around the notch
 - [x] Add feature: Ambient border shine
 - [x] Fix: Detert cover art for alternate file for ad
 - [x] Update: Ad alt file feature to choose more than 1 song and random selec
