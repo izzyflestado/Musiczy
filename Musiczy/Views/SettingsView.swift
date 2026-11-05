@@ -5,8 +5,12 @@ import UniformTypeIdentifiers
 struct SettingsView: View {
     @AppStorage(SettingsKey.replaceLockWallpaper) private var replaceWallpaper = false
     @AppStorage(SettingsKey.adVolume) private var adVolume = 0.8
-    @AppStorage(SettingsKey.ambientShine) private var ambientShine = false              // add if missing
-    @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true     // add this one
+    @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
+    @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
+    @AppStorage(SettingsKey.ambientSaturation) private var ambientSaturation = ShineDefault.saturation
+    @AppStorage(SettingsKey.ambientSize) private var ambientSize = ShineDefault.size
+    @AppStorage(SettingsKey.shineLength) private var shineLength = ShineDefault.length
+    @AppStorage(SettingsKey.shineSpeed) private var shineSpeed = ShineDefault.speed
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
     @State private var pickingFiles = false
 
@@ -24,11 +28,44 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+
             Section("Background") {
                 Toggle("Blurred cover background", isOn: $blurredBackground)
                 Toggle("Ambient border shine", isOn: $ambientShine)
-            };            Section("Lock screen") {
+
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Ambient light")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        HStack(spacing: 24) {
+                            sliderCell("Saturation", $ambientSaturation, ShineDefault.saturationRange)
+                            sliderCell("Size", $ambientSize, ShineDefault.sizeRange)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Shine")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        HStack(spacing: 24) {
+                            sliderCell("Length", $shineLength, ShineDefault.lengthRange)
+                            sliderCell("Speed", $shineSpeed, ShineDefault.speedRange)
+                        }
+                    }
+
+                    Button("Reset sliders") {
+                        ambientSaturation = ShineDefault.saturation
+                        ambientSize = ShineDefault.size
+                        shineLength = ShineDefault.length
+                        shineSpeed = ShineDefault.speed
+                    }
+                }
+                .disabled(!ambientShine)
+                .opacity(ambientShine ? 1 : 0.4)
+            }
+
+            Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
                 Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
                     .font(.caption)
@@ -78,6 +115,16 @@ struct SettingsView: View {
         .onDisappear { adPlayer.stopPreview() }
     }
 
+    /// One slider with its name on the left. Two of these sit side by side on one line.
+    private func sliderCell(_ title: String, _ value: Binding<Double>,
+                            _ range: ClosedRange<Double>) -> some View {
+        HStack(spacing: 8) {
+            Text(title)
+                .frame(width: 72, alignment: .leading)
+            Slider(value: value, in: range)
+        }
+    }
+
     /// One file in the list: name, preview button and remove button.
     private func adRow(_ path: String) -> some View {
         let exists = FileManager.default.fileExists(atPath: path)
@@ -120,7 +167,6 @@ struct SettingsView: View {
         .frame(height: rowHeight)
     }
 }
-
 /// Opens Settings in its own window: centered, active, and in front of everything.
 final class SettingsWindowController {
     static let shared = SettingsWindowController()

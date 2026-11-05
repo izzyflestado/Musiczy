@@ -7,52 +7,72 @@ import CoreImage
 /// Core Animation keeps running while the main thread is busy, and the highlight
 /// moves at an even speed along the border, so it is the same length on every edge.
 struct BorderStreak: NSViewRepresentable {
-    func makeNSView(context: Context) -> StreakView { StreakView() }
-    func updateNSView(_ nsView: StreakView, context: Context) {}
+    var length: Double      // fraction of the border it covers
+    var seconds: Double     // time for one lap
+
+    func makeNSView(context: Context) -> StreakView {
+        let view = StreakView()
+        view.configure(length: length, seconds: seconds)
+        return view
+    }
+
+    func updateNSView(_ nsView: StreakView, context: Context) {
+        nsView.configure(length: length, seconds: seconds)
+    }
 }
 
 final class StreakView: NSView {
     private let container = CALayer()
     private var builtSize = CGSize.zero
-    
+    private var length = ShineStyle.sweepLength
+    private var seconds = ShineStyle.sweepSeconds
+
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         wantsLayer = true
         layerUsesCoreImageFilters = true
-        layer?.masksToBounds = true       // NEW: nothing draws outside the screen
+        layer?.masksToBounds = true       // nothing draws outside the screen
         layer?.addSublayer(container)
     }
-    
+
     required init?(coder: NSCoder) { fatalError("not used") }
-    
+
     /// Never catch clicks: the player's buttons are underneath.
     override func hitTest(_ point: NSPoint) -> NSView? { nil }
-    
+
+    /// Called when the sliders change. Rebuilds the highlight only if a value really changed.
+    func configure(length: Double, seconds: Double) {
+        guard length != self.length || seconds != self.seconds else { return }
+        self.length = length
+        self.seconds = seconds
+        if builtSize != .zero { rebuild() }
+    }
+
     override func layout() {
         super.layout()
         guard bounds.size != builtSize, bounds.width > 50, bounds.height > 50 else { return }
         builtSize = bounds.size
         rebuild()
     }
-    
+
     private func rebuild() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         defer { CATransaction.commit() }
-        
+
         container.sublayers?.forEach { $0.removeFromSuperlayer() }
-        
+
         // The container is bigger than the screen, so the blur also has something to blur
         // outside the screen edge. That keeps the highlight at full strength AT the edge.
         let pad = ShineStyle.sweepWidth + ShineStyle.sweepBlur * 3
         container.frame = bounds.insetBy(dx: -pad, dy: -pad)
-        
+
         if let blur = CIFilter(name: "CIGaussianBlur") {
             blur.setDefaults()
             blur.setValue(Double(ShineStyle.sweepBlur), forKey: kCIInputRadiusKey)
             container.filters = [blur]
         }
-        
+
         // The screen's edge, twice in a row, so the highlight can run one full lap and start over with no seam.
         // On a Mac with a notch, the line dips down around it.
         let r = CGRect(x: pad, y: pad, width: bounds.width, height: bounds.height)
@@ -68,22 +88,23 @@ final class StreakView: NSView {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: r.minX, y: r.minY))
         for _ in 0..<2 { loop.forEach { path.addLine(to: $0) } }
-        
+
         // The streak is cut into thin slices, each with its own strength:
         // brightest in the middle, fading out toward both ends.
         let steps = 40
-        let whole = ShineStyle.sweepLength / 2        // its length as a fraction of the doubled path
-        
+        let whole = length / 2        // its length as a fraction of the doubled path
+        let lapSeconds = seconds
+
         for i in 0..<steps {
             let u0 = Double(i) / Double(steps)
             let u1 = Double(i + 1) / Double(steps)
             let strength = pow(sin(.pi * (u0 + u1) / 2), ShineStyle.sweepFalloff)
             let alpha = ShineStyle.sweepOpacity * strength
             guard alpha > 0.01 else { continue }
-            
+
             let start = whole * u0
             let end = whole * u1
-            
+
             let shape = CAShapeLayer()
             shape.frame = container.bounds
             shape.path = path
@@ -91,11 +112,11 @@ final class StreakView: NSView {
             shape.strokeColor = NSColor.white.cgColor
             shape.lineWidth = ShineStyle.sweepWidth * 2    // centered on the screen edge, so half is off-screen
             shape.lineCap = .butt                          // flat ends, no round blobs
-            shape.lineJoin = .round 
+            shape.lineJoin = .round
             shape.opacity = Float(min(alpha, 1))
             shape.strokeStart = CGFloat(start)
             shape.strokeEnd = CGFloat(end)
-            
+
             let moveStart = CABasicAnimation(keyPath: "strokeStart")
             moveStart.fromValue = start
             moveStart.toValue = start + 0.5            // half of the doubled path = one lap
@@ -103,16 +124,16 @@ final class StreakView: NSView {
             moveEnd.fromValue = end
             moveEnd.toValue = end + 0.5
             for anim in [moveStart, moveEnd] {
-                anim.duration = ShineStyle.sweepSeconds
+                anim.duration = lapSeconds
                 anim.timingFunction = CAMediaTimingFunction(name: .linear)
             }
-            
+
             let group = CAAnimationGroup()
             group.animations = [moveStart, moveEnd]
-            group.duration = ShineStyle.sweepSeconds
+            group.duration = lapSeconds
             group.repeatCount = .infinity
             shape.add(group, forKey: "lap")
-            
+
             container.addSublayer(shape)
         }
     }

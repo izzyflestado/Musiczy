@@ -29,6 +29,12 @@ struct AmbientBorderShine: View {
     let artwork: NSImage?
     let songID: UUID
 
+    // The four sliders from Settings
+    @AppStorage(SettingsKey.ambientSaturation) private var saturation = ShineDefault.saturation
+    @AppStorage(SettingsKey.ambientSize) private var glowSize = ShineDefault.size
+    @AppStorage(SettingsKey.shineLength) private var shineLength = ShineDefault.length
+    @AppStorage(SettingsKey.shineSpeed) private var shineSpeed = ShineDefault.speed
+
     @State private var colors: [Color] = []
     @State private var version = 0          // changes with every new palette, so the old one fades out
     @State private var spin = false
@@ -43,7 +49,7 @@ struct AmbientBorderShine: View {
                 ZStack {
                     if !colors.isEmpty {
                         AngularGradient(gradient: Gradient(colors: colors + [colors[0]]), center: .center)
-                            .saturation(1.3)
+                            .saturation(saturation)
                             .id(version)
                             .transition(.opacity)
                     }
@@ -54,10 +60,11 @@ struct AmbientBorderShine: View {
                 .animation(.linear(duration: ShineStyle.turnSeconds).repeatForever(autoreverses: false),
                            value: spin)
                 .frame(width: size.width, height: size.height)
-                .mask { RingMask(size: size) }
+                .mask { RingMask(size: size, scale: CGFloat(glowSize)) }
 
                 // White highlight (Core Animation, so it doesn't skip)
-                BorderStreak()
+                BorderStreak(length: shineLength,
+                             seconds: ShineStyle.sweepSeconds / max(shineSpeed, 0.1))
                     .frame(width: size.width, height: size.height)
                     .opacity(colors.isEmpty ? 0 : 1)
                     .animation(.easeInOut(duration: ShineStyle.fadeSeconds), value: colors.isEmpty)
@@ -80,10 +87,11 @@ struct AmbientBorderShine: View {
 }
 
 
-/// The shape of the glow: a border ring in three layers. Drawn once and kept as a picture,
-/// so only the colors behind it move.
+/// The shape of the glow: a border ring in two layers. Drawn once and kept as a picture,
+/// so only the colors behind it move. `scale` is the Size slider.
 private struct RingMask: View {
     let size: CGSize
+    let scale: CGFloat
 
     var body: some View {
         let outline = ScreenOutline(notch: Notch.size(for: size))
@@ -91,13 +99,13 @@ private struct RingMask: View {
 
         ZStack {
             // The line is centered on the outline and then cut to the inside, so the glow stays inside the screen.
-            outline.stroke(Color.white, style: round(ShineStyle.softWidth))
+            outline.stroke(Color.white, style: round(ShineStyle.softWidth * scale))
                 .clipShape(outline)
-                .blur(radius: ShineStyle.softBlur)
+                .blur(radius: ShineStyle.softBlur * scale)
                 .opacity(ShineStyle.softOpacity)
-            outline.stroke(Color.white, style: round(ShineStyle.midWidth))
+            outline.stroke(Color.white, style: round(ShineStyle.midWidth * scale))
                 .clipShape(outline)
-                .blur(radius: ShineStyle.midBlur)
+                .blur(radius: ShineStyle.midBlur * scale)
                 .opacity(ShineStyle.midOpacity)
         }
         .frame(width: size.width, height: size.height)

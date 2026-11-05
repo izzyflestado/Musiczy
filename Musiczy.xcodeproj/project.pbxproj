@@ -15,6 +15,7 @@
 		4302392230923091001B4AE0 /* StylePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302392130923091001B4AE0 /* StylePreview.swift */; };
 		431CB6A6309C3D9000E48C38 /* BorderStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431CB6A5309C3D9000E48C38 /* BorderStreak.swift */; };
 		431CB6A8309C415500E48C38 /* ScreenOutline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431CB6A7309C415500E48C38 /* ScreenOutline.swift */; };
+		4375E016309CCD19006D0D57 /* ShineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375E015309CCD19006D0D57 /* ShineSettings.swift */; };
 		439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90D3096BFF3002D875E /* GlowStore.swift */; };
 		439BB9103096C34A002D875E /* LockSongsGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90F3096C34A002D875E /* LockSongsGate.swift */; };
 		439BB9123096C58E002D875E /* FadeSwap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB9113096C58E002D875E /* FadeSwap.swift */; };
@@ -60,6 +61,7 @@
 		4302392130923091001B4AE0 /* StylePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePreview.swift; sourceTree = "<group>"; };
 		431CB6A5309C3D9000E48C38 /* BorderStreak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderStreak.swift; sourceTree = "<group>"; };
 		431CB6A7309C415500E48C38 /* ScreenOutline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenOutline.swift; sourceTree = "<group>"; };
+		4375E015309CCD19006D0D57 /* ShineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShineSettings.swift; sourceTree = "<group>"; };
 		439BB90D3096BFF3002D875E /* GlowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowStore.swift; sourceTree = "<group>"; };
 		439BB90F3096C34A002D875E /* LockSongsGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSongsGate.swift; sourceTree = "<group>"; };
 		439BB9113096C58E002D875E /* FadeSwap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeSwap.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				43D74A8D30997203001FD2A6 /* AmbientBorderShine.swift */,
 				431CB6A5309C3D9000E48C38 /* BorderStreak.swift */,
 				431CB6A7309C415500E48C38 /* ScreenOutline.swift */,
+				4375E015309CCD19006D0D57 /* ShineSettings.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC16D2C79F97A8DD084387D4 /* ContentView.swift in Sources */,
+				4375E016309CCD19006D0D57 /* ShineSettings.swift in Sources */,
 				43FA56673090684D004AFD29 /* MenuBarView.swift in Sources */,
 				4302392230923091001B4AE0 /* StylePreview.swift in Sources */,
 				43FA566D309074CB004AFD29 /* AdAudioPlayer.swift in Sources */,
