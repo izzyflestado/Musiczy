@@ -177,6 +177,7 @@ struct LockScreenRoot: View {
     @Namespace private var coverNS
     @ObservedObject private var activity = WindowManager.shared.activity
     @ObservedObject private var gate = LockSongGate.shared
+    @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
     
     private var hasSong: Bool {
         let title = gate.song.title
@@ -236,6 +237,18 @@ struct LockScreenRoot: View {
         .animation(.easeInOut(duration: 0.5), value: controller.isFullscreen)
         .frame(maxWidth: .infinity, maxHeight: .infinity,
                alignment: LockStyle.horizontalPosition)
+        .frame(maxWidth: .infinity, maxHeight: .infinity,
+               alignment: LockStyle.horizontalPosition)
+        .background {                                   // NEW
+            Group {
+                if ambientShine && controller.isLocked && hasSong && !controller.isFullscreen {
+                    AmbientBorderShine(artwork: gate.song.artwork, songID: gate.song.id)
+                }
+            }
+            .animation(.easeInOut(duration: 0.5), value: controller.isFullscreen)
+            .allowsHitTesting(false)
+        }
+        .coordinateSpace(name: "lockRoot")
         .coordinateSpace(name: "lockRoot")
         .onPreferenceChange(CoverFrameKey.self) { new in
             if let c = new["compact"] { frames["compact"] = c }
