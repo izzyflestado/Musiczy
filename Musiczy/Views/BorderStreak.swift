@@ -54,15 +54,20 @@ final class StreakView: NSView {
         }
         
         // The screen's edge, twice in a row, so the highlight can run one full lap and start over with no seam.
+        // On a Mac with a notch, the line dips down around it.
         let r = CGRect(x: pad, y: pad, width: bounds.width, height: bounds.height)
-        let corners = [CGPoint(x: r.minX, y: r.minY), CGPoint(x: r.maxX, y: r.minY),
-                       CGPoint(x: r.maxX, y: r.maxY), CGPoint(x: r.minX, y: r.maxY)]
-        let path = CGMutablePath()
-        path.move(to: corners[0])
-        for _ in 0..<2 {
-            for corner in corners.dropFirst() { path.addLine(to: corner) }
-            path.addLine(to: corners[0])
+        var loop = [CGPoint(x: r.maxX, y: r.minY), CGPoint(x: r.maxX, y: r.maxY)]
+        if let n = Notch.size(for: bounds.size) {
+            loop += [CGPoint(x: r.midX + n.width / 2, y: r.maxY),
+                     CGPoint(x: r.midX + n.width / 2, y: r.maxY - n.height),
+                     CGPoint(x: r.midX - n.width / 2, y: r.maxY - n.height),
+                     CGPoint(x: r.midX - n.width / 2, y: r.maxY)]
         }
+        loop += [CGPoint(x: r.minX, y: r.maxY), CGPoint(x: r.minX, y: r.minY)]
+
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: r.minX, y: r.minY))
+        for _ in 0..<2 { loop.forEach { path.addLine(to: $0) } }
         
         // The streak is cut into thin slices, each with its own strength:
         // brightest in the middle, fading out toward both ends.
@@ -86,7 +91,7 @@ final class StreakView: NSView {
             shape.strokeColor = NSColor.white.cgColor
             shape.lineWidth = ShineStyle.sweepWidth * 2    // centered on the screen edge, so half is off-screen
             shape.lineCap = .butt                          // flat ends, no round blobs
-            shape.lineJoin = .miter
+            shape.lineJoin = .round 
             shape.opacity = Float(min(alpha, 1))
             shape.strokeStart = CGFloat(start)
             shape.strokeEnd = CGFloat(end)

@@ -13,13 +13,14 @@ enum ShineStyle {
     static let midWidth: CGFloat = 24
     static let midBlur: CGFloat = 16
     static let midOpacity: Double = 1.0
+    static let notchMargin: CGFloat = 2
 
     // White highlight
     static let sweepSeconds: Double = 10     // time for one lap around the whole border (bigger = slower)
     static let sweepOpacity: Double = 1.0    // strength at the middle of the highlight
-    static let sweepLength: Double = 0.20    // fraction of the border it covers
+    static let sweepLength: Double = 0.24    // fraction of the border it covers
     static let sweepFalloff: Double = 2      // 1 = even along the length, 2 = brighter middle, 3 = sharp peak
-    static let sweepWidth: CGFloat = 40      // how far it reaches in from the screen edge
+    static let sweepWidth: CGFloat = 36      // how far it reaches in from the screen edge
     static let sweepBlur: CGFloat = 10       // softness of its inner edge and ends
 }
 
@@ -85,11 +86,17 @@ private struct RingMask: View {
     let size: CGSize
 
     var body: some View {
+        let outline = ScreenOutline(notch: Notch.size(for: size))
+        let round = { (width: CGFloat) in StrokeStyle(lineWidth: width * 2, lineJoin: .round) }
+
         ZStack {
-            Rectangle().strokeBorder(Color.white, lineWidth: ShineStyle.softWidth)
+            // The line is centered on the outline and then cut to the inside, so the glow stays inside the screen.
+            outline.stroke(Color.white, style: round(ShineStyle.softWidth))
+                .clipShape(outline)
                 .blur(radius: ShineStyle.softBlur)
                 .opacity(ShineStyle.softOpacity)
-            Rectangle().strokeBorder(Color.white, lineWidth: ShineStyle.midWidth)
+            outline.stroke(Color.white, style: round(ShineStyle.midWidth))
+                .clipShape(outline)
                 .blur(radius: ShineStyle.midBlur)
                 .opacity(ShineStyle.midOpacity)
         }
@@ -97,4 +104,3 @@ private struct RingMask: View {
         .drawingGroup()
     }
 }
-
