@@ -106,6 +106,8 @@ There is no account, analytics or tracking.
 ## Roadmap
 
 - [ ] Add mode state: Option for 1 word per line mode
+- [ ] Add feature: Customization for ambient light: saturation and size
+- [ ] Add feature: Customization for shine: length and speed
 - [x] Make the sweep and ambient light go around the notch
 - [x] Add feature: Ambient border shine
 - [x] Fix: Detert cover art for alternate file for ad
