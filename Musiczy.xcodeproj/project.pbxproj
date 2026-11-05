@@ -13,6 +13,7 @@
 		2D075BF34B2F279F120FD543 /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 2A3E0BE5C6E16F054C19CBC4 /* SkyLightWindow */; };
 		4302392030923073001B4AE0 /* DisplayStyleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302391F30923073001B4AE0 /* DisplayStyleStore.swift */; };
 		4302392230923091001B4AE0 /* StylePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302392130923091001B4AE0 /* StylePreview.swift */; };
+		431CB6A6309C3D9000E48C38 /* BorderStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431CB6A5309C3D9000E48C38 /* BorderStreak.swift */; };
 		439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90D3096BFF3002D875E /* GlowStore.swift */; };
 		439BB9103096C34A002D875E /* LockSongsGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90F3096C34A002D875E /* LockSongsGate.swift */; };
 		439BB9123096C58E002D875E /* FadeSwap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB9113096C58E002D875E /* FadeSwap.swift */; };
@@ -56,6 +57,7 @@
 		222692E3F82A38A810B173CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4302391F30923073001B4AE0 /* DisplayStyleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStyleStore.swift; sourceTree = "<group>"; };
 		4302392130923091001B4AE0 /* StylePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePreview.swift; sourceTree = "<group>"; };
+		431CB6A5309C3D9000E48C38 /* BorderStreak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderStreak.swift; sourceTree = "<group>"; };
 		439BB90D3096BFF3002D875E /* GlowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowStore.swift; sourceTree = "<group>"; };
 		439BB90F3096C34A002D875E /* LockSongsGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSongsGate.swift; sourceTree = "<group>"; };
 		439BB9113096C58E002D875E /* FadeSwap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeSwap.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				4302392130923091001B4AE0 /* StylePreview.swift */,
 				439BB9113096C58E002D875E /* FadeSwap.swift */,
 				43D74A8D30997203001FD2A6 /* AmbientBorderShine.swift */,
+				431CB6A5309C3D9000E48C38 /* BorderStreak.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				43FA566B30907276004AFD29 /* WallpaperManager.swift in Sources */,
 				43D74A8E30997203001FD2A6 /* AmbientBorderShine.swift in Sources */,
 				C237ABCA5EB17BD5949C7FA3 /* LockScreenWidget.swift in Sources */,
+				431CB6A6309C3D9000E48C38 /* BorderStreak.swift in Sources */,
 				4302392030923073001B4AE0 /* DisplayStyleStore.swift in Sources */,
 				22CFAD141CD71B4BD73A3151 /* LyricsService.swift in Sources */,
 				6A146FFF09BDC362F172DB58 /* MusiczyApp.swift in Sources */,
