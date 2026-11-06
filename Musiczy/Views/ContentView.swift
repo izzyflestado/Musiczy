@@ -26,6 +26,8 @@ struct NowPlayingScreen: View {
     private let darkTintLevel: Double = 0.16     // how dark the tint is: 0 = black, higher = lighter
     @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
     @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
+    @AppStorage(SettingsKey.lyricsSize) private var lyricsSize = LyricsDefault.size
+    @AppStorage(SettingsKey.lyricsWords) private var lyricsWords = LyricsDefault.words
 
     
     // The display style (Art/Lyrics + its 3 styles). The main window shares it with Settings
@@ -555,9 +557,14 @@ struct NowPlayingScreen: View {
         // Fixed font and row height; the 3rd state is scaled up so it animates smoothly.
         let scale: CGFloat = lyricsStyle == 3 ? 1.3 : (style == 2 ? 1.08 : 1.0)
 
-        return lyricsList(rows: style == 2 ? 3 : 5,
-                          rowHeight: 130,
-                          fontSize: 50,
+        // The Size slider in Settings: font and row height grow together.
+        let rows = style == 2 ? 3 : 5
+        let k = CGFloat(lyricsSize)
+        let rowHeight: CGFloat = k <= 1 ? 130 * k : min(130 * k, max(130, panelH / CGFloat(rows)))
+
+        return lyricsList(rows: rows,
+                          rowHeight: rowHeight,
+                          fontSize: LyricsLayout.baseFontSize * k,
                           centered: style == 2)
             .frame(width: panelW, height: panelH)
             .scaleEffect(scale)
@@ -573,6 +580,8 @@ struct NowPlayingScreen: View {
         let focusF: CGFloat = browseFocus ?? CGFloat(current)
         let focus = Int(focusF.rounded())
         let half = rows / 2
+        // Short lines (1 or 2 words) change quickly, so the list follows them faster.
+        let followSpeed: Double = lyricsWords <= 2 ? 0.4 : 0.8
 
         return Group {
             if viewModel.lyrics.isEmpty {
@@ -583,26 +592,31 @@ struct NowPlayingScreen: View {
                 VStack(spacing: 0) {
                     ForEach(Array(viewModel.lyrics.enumerated()), id: \.offset) { index, line in
                         let distance = abs(index - focus)
-                        Text(line.text.isEmpty ? "♪" : line.text)
-                            .font(.system(size: fontSize, weight: .bold))
-                            .foregroundStyle(.white)
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.6)
-                            .multilineTextAlignment(centered ? .center : .leading)
-                            .frame(maxWidth: .infinity,
-                                   minHeight: rowHeight, maxHeight: rowHeight,
-                                   alignment: centered ? .center : .leading)
-                            .opacity(lyricOpacity(distance: distance, rows: rows))
-                            .scaleEffect(distance == 0 ? 1.0 : (distance == 1 ? 0.8 : 0.62),
-                                         anchor: centered ? .center : .leading)
-                            .contentShape(Rectangle())
-                            .onTapGesture { viewModel.seek(toTime: line.time); resetBrowse() }
-                            .allowsHitTesting(distance <= half)
+                        if distance > half + 1 {
+                            // Too far away to be seen: keep the space, skip the text.
+                            Color.clear.frame(height: rowHeight)
+                        } else {
+                            Text(line.text.isEmpty ? "♪" : line.text)
+                                .font(.system(size: fontSize, weight: .bold))
+                                .foregroundStyle(.white)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.6)
+                                .multilineTextAlignment(centered ? .center : .leading)
+                                .frame(maxWidth: .infinity,
+                                       minHeight: rowHeight, maxHeight: rowHeight,
+                                       alignment: centered ? .center : .leading)
+                                .opacity(lyricOpacity(distance: distance, rows: rows))
+                                .scaleEffect(distance == 0 ? 1.0 : (distance == 1 ? 0.8 : 0.62),
+                                             anchor: centered ? .center : .leading)
+                                .contentShape(Rectangle())
+                                .onTapGesture { viewModel.seek(toTime: line.time); resetBrowse() }
+                                .allowsHitTesting(distance <= half)
+                        }
                     }
                 }
                 .offset(y: (CGFloat(half) - focusF) * rowHeight)
                 .animation(browseFocus == nil
-                           ? .spring(response: 0.8, dampingFraction: 0.9)
+                           ? .spring(response: followSpeed, dampingFraction: 0.9)
                            : .easeOut(duration: 0.12),
                            value: focusF)
                 .frame(height: rowHeight * CGFloat(rows), alignment: .top)
@@ -906,5 +920,3 @@ struct SeekBar: View, Animatable {
         .frame(height: height)
     }
 }
-
-

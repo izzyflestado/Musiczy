@@ -11,6 +11,8 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.ambientSize) private var ambientSize = ShineDefault.size
     @AppStorage(SettingsKey.shineLength) private var shineLength = ShineDefault.length
     @AppStorage(SettingsKey.shineSpeed) private var shineSpeed = ShineDefault.speed
+    @AppStorage(SettingsKey.lyricsWords) private var lyricsWords = LyricsDefault.words
+    @AppStorage(SettingsKey.lyricsSize) private var lyricsSize = LyricsDefault.size
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
     @State private var pickingFiles = false
 
@@ -65,6 +67,28 @@ struct SettingsView: View {
                 .opacity(ambientShine ? 1 : 0.4)
             }
 
+            Section("Lyrics") {
+                LyricsPreview(words: lyricsWords, size: lyricsSize)
+
+                lyricsRow("Words per line", "\(lyricsWords)") {
+                    Slider(value: wordsBinding, in: 1...Double(LyricsDefault.maxWords), step: 1)
+                }
+
+                lyricsRow("Size", "\(Int((lyricsSize * 100).rounded()))%") {
+                    Slider(value: $lyricsSize, in: LyricsDefault.sizeRange)
+                }
+
+                Text("At this size up to \(LyricsLayout.maxWordsThatFit(size: lyricsSize)) words fit on one line. Making the text bigger lowers the words per line to match. Lines with more words are split into several lines that follow the song.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Button("Reset lyrics") {
+                    lyricsSize = LyricsDefault.size
+                    lyricsWords = min(LyricsDefault.words,
+                                      LyricsLayout.maxWordsThatFit(size: LyricsDefault.size))
+                }
+            }
+
             Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
                 Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
@@ -112,7 +136,37 @@ struct SettingsView: View {
             }
         }
         .onChange(of: adVolume) { _, _ in adPlayer.applyVolume() }
+        // Bigger text means fewer words fit on a line: lower the words per line to match.
+        .onChange(of: lyricsSize) { _, _ in
+            let fit = LyricsLayout.maxWordsThatFit(size: lyricsSize)
+            if lyricsWords > fit { lyricsWords = fit }
+        }
         .onDisappear { adPlayer.stopPreview() }
+    }
+
+    /// The words-per-line slider. It can't go past the number of words that fit on one line.
+    private var wordsBinding: Binding<Double> {
+        Binding(
+            get: { Double(lyricsWords) },
+            set: { newValue in
+                let fit = LyricsLayout.maxWordsThatFit(size: lyricsSize)
+                lyricsWords = min(max(Int(newValue.rounded()), 1), fit)
+            }
+        )
+    }
+
+    /// One slider on its own line: name on the left, the value on the right.
+    private func lyricsRow<S: View>(_ title: String, _ value: String,
+                                    @ViewBuilder slider: () -> S) -> some View {
+        HStack(spacing: 10) {
+            Text(title)
+                .frame(width: 110, alignment: .leading)
+            slider()
+            Text(value)
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+                .frame(width: 44, alignment: .trailing)
+        }
     }
 
     /// One slider with its name on the left. Two of these sit side by side on one line.
@@ -167,6 +221,7 @@ struct SettingsView: View {
         .frame(height: rowHeight)
     }
 }
+
 /// Opens Settings in its own window: centered, active, and in front of everything.
 final class SettingsWindowController {
     static let shared = SettingsWindowController()
@@ -183,15 +238,15 @@ final class SettingsWindowController {
             w.orderFrontRegardless()
             return
         }
-        
+
         // Give the window its real size BEFORE centering it.
-                // On the first open, SwiftUI hasn't measured the content yet.
-                if let view = w.contentViewController?.view {
-                    view.layoutSubtreeIfNeeded()
-                    let size = view.fittingSize
-                    if size.width > 0, size.height > 0 { w.setContentSize(size) }
-                }
-                w.layoutIfNeeded()
+        // On the first open, SwiftUI hasn't measured the content yet.
+        if let view = w.contentViewController?.view {
+            view.layoutSubtreeIfNeeded()
+            let size = view.fittingSize
+            if size.width > 0, size.height > 0 { w.setContentSize(size) }
+        }
+        w.layoutIfNeeded()
 
         // Exact center of the screen where the mouse is (the one whose menu bar you clicked).
         let screen = NSScreen.screens.first { NSMouseInRect(NSEvent.mouseLocation, $0.frame, false) }

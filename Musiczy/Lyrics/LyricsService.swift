@@ -7,6 +7,7 @@ struct LyricLine: Equatable {
 }
 
 /// Looks up time-synced lyrics on LRCLIB (free, no account or API key).
+/// The lines come back as written. Splitting them (words per line) is done by LyricsLayout.
 enum LyricsService {
     /// Tries LRCLIB's exact match first, then falls back to a search.
     static func fetch(title: String, artist: String, duration: Double,
@@ -187,56 +188,6 @@ enum LyricsService {
             if let last = cleaned.last, last.text == line.text, line.time - last.time < 1.5 { continue }
             cleaned.append(line)
         }
-        return usable(splitLong(cleaned)) ?? []
-    }
-    // ===== MAX CHARACTERS PER LINE: change this number =====
-    static let maxChars = 38
-    // =======================================================
-
-    /// Splits lines that are too long into shorter ones, sharing out the time.
-    static func splitLong(_ lines: [LyricLine]) -> [LyricLine] {
-        var out: [LyricLine] = []
-        for (i, line) in lines.enumerated() {
-            let pieces = chunk(line.text)
-            if pieces.count <= 1 {
-                out.append(line)
-                continue
-            }
-            let end = i + 1 < lines.count ? lines[i + 1].time : line.time + 4 * Double(pieces.count)
-            let span = max(end - line.time, 0.5)
-            let totalChars = Double(pieces.reduce(0) { $0 + $1.count })
-            var t = line.time
-            for piece in pieces {
-                out.append(LyricLine(time: t, text: piece))
-                t += span * Double(piece.count) / totalChars
-            }
-        }
-        return out
-    }
-
-    /// Cuts one long text into pieces of similar length, preferring to break after punctuation.
-    static func chunk(_ text: String) -> [String] {
-        guard text.count > maxChars else { return [text] }
-
-        let words = text.split(separator: " ").map(String.init)
-        let count = Int((Double(text.count) / Double(maxChars)).rounded(.up))
-        let target = text.count / count
-
-        var pieces: [String] = []
-        var current = ""
-        for word in words {
-            current = current.isEmpty ? word : current + " " + word
-
-            let endsSentence = [",", ".", "!", "?", ";"].contains { word.hasSuffix($0) }
-            let longEnough = current.count >= target
-            let niceBreak = endsSentence && current.count >= Int(Double(target) * 0.6)
-
-            if pieces.count < count - 1 && (longEnough || niceBreak) {
-                pieces.append(current)
-                current = ""
-            }
-        }
-        if !current.isEmpty { pieces.append(current) }
-        return pieces
+        return usable(cleaned) ?? []
     }
 }
