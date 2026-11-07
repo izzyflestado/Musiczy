@@ -94,8 +94,9 @@ There is no account, analytics or tracking.
 ## Known bugs
 
 - Visual bug during ads
-- Visual bug - Sometimes does not switch cover art when changing songs (might do this if tabbed out).
+- Visual bug - Sometimes does not switch cover art when changing songs (might do this if tabbed out)
 - Visual bug - White streak on ambient light skipping
+- Visual bug - Ad cover art nit switching after going back to normal playback
 
 ## Known limitations
 
