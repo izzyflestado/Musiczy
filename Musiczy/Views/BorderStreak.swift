@@ -99,7 +99,10 @@ final class StreakView: NSView {
 
         // The streak is cut into thin slices, each with its own strength:
         // brightest in the middle, fading out toward both ends.
-        let steps = 40
+        // Slices must be about as short as the blur, or each step in the fade shows up as its own blob.
+        let perimeter = 2 * (bounds.width + bounds.height)
+        let streakPoints = perimeter * CGFloat(length)            // length of the highlight in points
+        let steps = min(max(Int(streakPoints / max(sweepBlur, 4)), 40), 160)
         let whole = length / 2        // its length as a fraction of the doubled path
         let lapSeconds = seconds
 
