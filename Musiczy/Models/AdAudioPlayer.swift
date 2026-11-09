@@ -4,7 +4,6 @@ import Combine
 extension SettingsKey {
     static let adFilePaths = "adFilePaths"
     static let adFilePath = "adFilePath"     // old single-file key, only used to carry your old choice over
-    static let adVolume = "adVolume"
 }
 
 /// What the ad file that is playing right now is.
@@ -46,8 +45,9 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     /// Where the ad file is, in seconds.
     var position: Double { player?.currentTime ?? 0 }
 
+    /// Same level as Spotify's own volume (0.8 if Spotify can't be read).
     private var volume: Float {
-        Float(UserDefaults.standard.object(forKey: SettingsKey.adVolume) as? Double ?? 0.8)
+        Float(min(max(SpotifyBridge.volumeLevel ?? 0.8, 0), 1))
     }
 
     private override init() {
@@ -168,9 +168,6 @@ final class AdAudioPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         if previewingPath != nil { stopSound() }
     }
 
-    func applyVolume() {
-        player?.volume = volume
-    }
 
     // MARK: - Helpers
 

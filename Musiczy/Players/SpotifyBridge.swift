@@ -69,6 +69,7 @@ enum SpotifyBridge {
             savedVolume = nil
             return
         }
+        
 
         if muted {
             guard savedVolume == nil else { return }   // already muted
@@ -82,6 +83,16 @@ enum SpotifyBridge {
             else { return }
             savedVolume = nil
         }
+    }
+    
+    /// Spotify's own volume from 0 to 1. During an ad this is the level saved before we
+    /// silenced it. Otherwise it's the live level. nil = Spotify is closed or couldn't be read.
+    static var volumeLevel: Double? {
+        if let saved = savedVolume { return Double(saved) / 100 }
+        guard isRunning,
+              let live = run("tell application id \"com.spotify.client\" to return sound volume")?
+                  .result?.int32Value else { return nil }
+        return Double(live) / 100
     }
     
     // MARK: - Controls

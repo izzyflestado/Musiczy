@@ -4,7 +4,6 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @AppStorage(SettingsKey.replaceLockWallpaper) private var replaceWallpaper = false
-    @AppStorage(SettingsKey.adVolume) private var adVolume = 0.8
     @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
     @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
     @AppStorage(SettingsKey.ambientSaturation) private var ambientSaturation = ShineDefault.saturation
@@ -111,8 +110,6 @@ struct SettingsView: View {
                         Button("Remove All") { adPlayer.removeAll() }
                     }
                 }
-
-                Slider(value: $adVolume, in: 0...1) { Text("Volume") }
             }
         }
         .formStyle(.grouped)
@@ -125,7 +122,6 @@ struct SettingsView: View {
                 adPlayer.add(urls)
             }
         }
-        .onChange(of: adVolume) { _, _ in adPlayer.applyVolume() }
         // Bigger text means fewer words fit on a line: lower the words per line to match.
         .onChange(of: lyricsSize) { _, _ in
             let fit = LyricsLayout.maxWordsThatFit(size: lyricsSize)
