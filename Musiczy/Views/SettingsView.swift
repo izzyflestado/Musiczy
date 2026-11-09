@@ -26,17 +26,10 @@ struct SettingsView: View {
         Form {
             Section("Display style") {
                 DisplayStylePicker()
-
-                Text("Click a style to switch the player right away. The Art and Lyrics buttons in the player change it too, and your choice is remembered.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
 
             Section("Details") {
                 Toggle("Hide song details when idle", isOn: $hideDetails)
-                Text("After 3 seconds without mouse movement, the title, artist, album, time and progress bar fade out together with the controls. They come back when you move the mouse.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
             
             Section("Background") {
@@ -86,10 +79,6 @@ struct SettingsView: View {
                     Slider(value: $lyricsSize, in: LyricsDefault.sizeRange)
                 }
 
-                Text("At this size up to \(LyricsLayout.maxWordsThatFit(size: lyricsSize)) words fit on one line. Making the text bigger lowers the words per line to match. Lines with more words are split into several lines that follow the song.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
                 Button("Reset lyrics") {
                     lyricsSize = LyricsDefault.size
                     lyricsWords = min(LyricsDefault.words,
@@ -99,9 +88,6 @@ struct SettingsView: View {
 
             Section("Lock screen") {
                 Toggle("Use cover art as lock screen wallpaper", isOn: $replaceWallpaper)
-                Text("While the Mac is locked, your wallpaper is replaced with a blurred copy of the cover. It goes back when you unlock or quit Musiczy.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
 
             Section("Alternative music during ads") {
@@ -127,10 +113,6 @@ struct SettingsView: View {
                 }
 
                 Slider(value: $adVolume, in: 0...1) { Text("Volume") }
-
-                Text("Spotify is muted during ads and Musiczy plays a random file from this list. When a file ends it picks another one, until the ad is over. The same file doesn't play twice in a row. Any audio file works, such as MP3, M4A, WAV or FLAC.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
         }
         .formStyle(.grouped)
