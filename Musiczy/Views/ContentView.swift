@@ -569,12 +569,13 @@ struct NowPlayingScreen: View {
         return lyricsList(rows: rows,
                           rowHeight: rowHeight,
                           fontSize: fontSize,
-                          centered: style == 2)
+                          centered: style == 2 || lyricsWords <= 1)   // was: style == 2
             .frame(width: panelW, height: panelH)
             .scaleEffect(scale)
             .offset(x: x, y: y + (style == 2 && !activity.isActive ? 40 : 0))
             .animation(.easeInOut(duration: 0.3), value: activity.isActive)
             .opacity(style == 0 ? 0 : 1)
+            .animation(.easeInOut(duration: 0.3), value: lyricsWords <= 1)
             .animation(modeAnimation, value: lyricsStyle)
             .allowsHitTesting(style != 0)
     }

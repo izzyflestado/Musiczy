@@ -17,6 +17,7 @@ struct LyricsPreview: View {
     var body: some View {
         let pieces = LyricsLayout.samplePieces(words: words, size: size)
         let current = pieces.isEmpty ? 0 : step % pieces.count
+        let centered = words <= 1
 
         GeometryReader { geo in
             let inner = max(geo.size.width - sidePadding * 2, 120)
@@ -32,9 +33,10 @@ struct LyricsPreview: View {
                         .foregroundStyle(.white)
                         .lineLimit(2)
                         .minimumScaleFactor(0.6)
-                        .frame(width: inner, height: row, alignment: .leading)
+                        .frame(width: inner, height: row, alignment: centered ? .center : .leading)
                         .opacity(distance == 0 ? 1 : (distance == 1 ? 0.55 : (distance == 2 ? 0.28 : 0)))
-                        .scaleEffect(distance == 0 ? 1.0 : (distance == 1 ? 0.8 : 0.62), anchor: .leading)
+                        .scaleEffect(distance == 0 ? 1.0 : (distance == 1 ? 0.8 : 0.62),
+                                     anchor: centered ? .center : .leading)
                 }
             }
             // Keep the bright line in the middle of the box.
