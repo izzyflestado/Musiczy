@@ -13,7 +13,7 @@ enum ShineDefault {
     static let saturation: Double = 1.3
     static let saturationRange: ClosedRange<Double> = 0...2
     static let size: Double = 1.0                    // 1 = the size in ShineStyle
-    static let sizeRange: ClosedRange<Double> = 0.5...2
+    static let sizeRange: ClosedRange<Double> = 0.1...2
 
     // Shine (the white highlight)
     static let length: Double = ShineStyle.sweepLength   // fraction of the border it covers

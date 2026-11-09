@@ -9,15 +9,16 @@ import CoreImage
 struct BorderStreak: NSViewRepresentable {
     var length: Double      // fraction of the border it covers
     var seconds: Double     // time for one lap
+    var scale: Double = 1   // 1 = full size (ShineStyle values), lower = smaller
 
     func makeNSView(context: Context) -> StreakView {
         let view = StreakView()
-        view.configure(length: length, seconds: seconds)
+        view.configure(length: length, seconds: seconds, scale: scale)
         return view
     }
 
     func updateNSView(_ nsView: StreakView, context: Context) {
-        nsView.configure(length: length, seconds: seconds)
+        nsView.configure(length: length, seconds: seconds, scale: scale)
     }
 }
 
@@ -26,6 +27,7 @@ final class StreakView: NSView {
     private var builtSize = CGSize.zero
     private var length = ShineStyle.sweepLength
     private var seconds = ShineStyle.sweepSeconds
+    private var sizeScale = 1.0
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -41,10 +43,11 @@ final class StreakView: NSView {
     override func hitTest(_ point: NSPoint) -> NSView? { nil }
 
     /// Called when the sliders change. Rebuilds the highlight only if a value really changed.
-    func configure(length: Double, seconds: Double) {
-        guard length != self.length || seconds != self.seconds else { return }
+    func configure(length: Double, seconds: Double, scale: Double) {
+        guard length != self.length || seconds != self.seconds || scale != self.sizeScale else { return }
         self.length = length
         self.seconds = seconds
+        self.sizeScale = scale
         if builtSize != .zero { rebuild() }
     }
 
@@ -64,12 +67,17 @@ final class StreakView: NSView {
 
         // The container is bigger than the screen, so the blur also has something to blur
         // outside the screen edge. That keeps the highlight at full strength AT the edge.
-        let pad = ShineStyle.sweepWidth + ShineStyle.sweepBlur * 3
+        // The sweep follows the ambient Size slider, but is never bigger than the ShineStyle values.
+        let k = CGFloat(min(max(sizeScale, 0.05), 1))
+        let sweepWidth = ShineStyle.sweepWidth * k
+        let sweepBlur = ShineStyle.sweepBlur * k
+
+        let pad = sweepWidth + sweepBlur * 3
         container.frame = bounds.insetBy(dx: -pad, dy: -pad)
 
         if let blur = CIFilter(name: "CIGaussianBlur") {
             blur.setDefaults()
-            blur.setValue(Double(ShineStyle.sweepBlur), forKey: kCIInputRadiusKey)
+            blur.setValue(Double(sweepBlur), forKey: kCIInputRadiusKey)
             container.filters = [blur]
         }
 
@@ -110,7 +118,7 @@ final class StreakView: NSView {
             shape.path = path
             shape.fillColor = nil
             shape.strokeColor = NSColor.white.cgColor
-            shape.lineWidth = ShineStyle.sweepWidth * 2    // centered on the screen edge, so half is off-screen
+            shape.lineWidth = sweepWidth * 2               // centered on the screen edge, so half is off-screen
             shape.lineCap = .butt                          // flat ends, no round blobs
             shape.lineJoin = .round
             shape.opacity = Float(min(alpha, 1))

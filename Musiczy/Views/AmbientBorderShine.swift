@@ -22,6 +22,7 @@ enum ShineStyle {
     static let sweepFalloff: Double = 2      // 1 = even along the length, 2 = brighter middle, 3 = sharp peak
     static let sweepWidth: CGFloat = 36      // how far it reaches in from the screen edge
     static let sweepBlur: CGFloat = 10       // softness of its inner edge and ends
+    static let sweepMinScale: Double = 0.4   // sweep size at the smallest ambient Size (1 = never shrinks)
 }
 
 /// Black background mode: a glowing border that turns slowly and uses the cover's colors.
@@ -39,6 +40,14 @@ struct AmbientBorderShine: View {
     @State private var version = 0          // changes with every new palette, so the old one fades out
     @State private var spin = false
 
+    
+    /// Full size at ambient Size 1.0 and up, shrinking to sweepMinScale at the slider's minimum.
+    private var sweepScale: Double {
+        let low = ShineDefault.sizeRange.lowerBound
+        let t = (min(glowSize, 1) - low) / (1 - low)       // 0 at the smallest slider value, 1 at default
+        return ShineStyle.sweepMinScale + (1 - ShineStyle.sweepMinScale) * min(max(t, 0), 1)
+    }
+    
     var body: some View {
         GeometryReader { geo in
             let size = geo.size
@@ -64,7 +73,8 @@ struct AmbientBorderShine: View {
 
                 // White highlight (Core Animation, so it doesn't skip)
                 BorderStreak(length: shineLength,
-                             seconds: ShineStyle.sweepSeconds / max(shineSpeed, 0.1))
+                             seconds: ShineStyle.sweepSeconds / max(shineSpeed, 0.1),
+                             scale: sweepScale)                  // was: min(glowSize, 1)
                     .frame(width: size.width, height: size.height)
                     .opacity(colors.isEmpty ? 0 : 1)
                     .animation(.easeInOut(duration: ShineStyle.fadeSeconds), value: colors.isEmpty)
