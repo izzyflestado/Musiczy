@@ -13,6 +13,7 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.shineSpeed) private var shineSpeed = ShineDefault.speed
     @AppStorage(SettingsKey.lyricsWords) private var lyricsWords = LyricsDefault.words
     @AppStorage(SettingsKey.lyricsSize) private var lyricsSize = LyricsDefault.size
+    @AppStorage(SettingsKey.hideDetails) private var hideDetails = false
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
     @State private var pickingFiles = false
 
@@ -31,6 +32,13 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
             }
 
+            Section("Details") {
+                Toggle("Hide song details when idle", isOn: $hideDetails)
+                Text("After 3 seconds without mouse movement, the title, artist, album, time and progress bar fade out together with the controls. They come back when you move the mouse.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            
             Section("Background") {
                 Toggle("Blurred cover background", isOn: $blurredBackground)
                 Toggle("Ambient border shine", isOn: $ambientShine)

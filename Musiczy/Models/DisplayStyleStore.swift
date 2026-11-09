@@ -3,8 +3,9 @@ import SwiftUI
 extension SettingsKey {
     static let displayMode = "displayMode"   // 0 = Art, 1 = Lyrics
     static let artStyle = "artStyle"         // 0, 1 or 2
-    static let ambientShine = "ambientShine"             // NEW
-    static let blurredBackground = "blurredBackground"   // NEW
+    static let ambientShine = "ambientShine"
+    static let blurredBackground = "blurredBackground"
+    static let hideDetails = "hideDetails"
 }
 
 /// The six looks of the player: Art or Lyrics, each in three display styles.

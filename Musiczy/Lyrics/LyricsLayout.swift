@@ -10,7 +10,7 @@ enum LyricsDefault {
     static let words = 4                          // words per line
     static let maxWords = 8                       // the most words on one line that is still easy to read
     static let size: Double = 1.0                 // 1 = the normal lyric size
-    static let sizeRange: ClosedRange<Double> = 0.6...1.4
+    static let sizeRange: ClosedRange<Double> = 0.6...2.0
     static let tightRowRatio: CGFloat = 1.6
     static let normalRowRatio: CGFloat = 2.6
     static let wordsForNormalRows = 4

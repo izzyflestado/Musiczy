@@ -28,6 +28,8 @@ struct NowPlayingScreen: View {
     @AppStorage(SettingsKey.blurredBackground) private var blurredBackground = true
     @AppStorage(SettingsKey.lyricsSize) private var lyricsSize = LyricsDefault.size
     @AppStorage(SettingsKey.lyricsWords) private var lyricsWords = LyricsDefault.words
+    @AppStorage(SettingsKey.hideDetails) private var hideDetails = false
+    private var detailsHidden: Bool { hideDetails && !activity.isActive }
 
     
     // The display style (Art/Lyrics + its 3 styles). The main window shares it with Settings
@@ -334,64 +336,69 @@ struct NowPlayingScreen: View {
             
             // Everything below fades out in state 3, when the bottom bar takes over.
             VStack(spacing: 28 * s) {
-                VStack(spacing: 8 * s) {
-                    if viewModel.isAd {
-                        Text("Made by Izzy :)")
-                            .font(.system(size: 44 * s, weight: .bold))
-                    } else {
-                        Text(shownTitle)
-                            .font(.system(size: 44 * s, weight: .bold))
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.5)
-                        Text(shownArtist)
-                            .font(.system(size: 24 * s, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.85))
-                        Text(shownAlbum)
-                            .font(.system(size: 17 * s))
-                            .foregroundStyle(.white.opacity(0.6))
+                Group {
+                    VStack(spacing: 8 * s) {
+                        if viewModel.isAd {
+                            Text("Made by Izzy :)")
+                                .font(.system(size: 44 * s, weight: .bold))
+                        } else {
+                            Text(shownTitle)
+                                .font(.system(size: 44 * s, weight: .bold))
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.5)
+                            Text(shownArtist)
+                                .font(.system(size: 24 * s, weight: .medium))
+                                .foregroundStyle(.white.opacity(0.85))
+                            Text(shownAlbum)
+                                .font(.system(size: 17 * s))
+                                .foregroundStyle(.white.opacity(0.6))
+                        }
                     }
-                }
-                .foregroundStyle(.white)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: max(size, 420 * s))
-                .frame(minHeight: 175 * s, maxHeight: fullOn ? 175 * s : nil, alignment: .bottom)
-                .opacity(textOpacity)
-                .offset(y: slide)
-                .animation(.easeInOut(duration: 0.3), value: activity.isActive)
-                
-                // Times + progress bar (click or drag to seek)
-                VStack(spacing: 10 * s) {
-                    HStack {
-                        Text(formatTime(dragFraction.map { $0 * viewModel.duration } ?? viewModel.position))
-                        Spacer()
-                        Text(formatTime(shownDuration))
-                    }
-                    .font(.system(size: 13 * s, weight: .medium).monospacedDigit())
-                    .foregroundStyle(.white.opacity(0.7))
-                    .frame(width: size)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: max(size, 420 * s))
+                    .frame(minHeight: 175 * s, maxHeight: fullOn ? 175 * s : nil, alignment: .bottom)
                     .opacity(textOpacity)
+                    .offset(y: slide)
+                    .animation(.easeInOut(duration: 0.3), value: activity.isActive)
                     
-                    SeekBar(fraction: shown, height: 5 * s)
-                        .frame(width: size, height: 5 * s)
-                        .animation(dragFraction == nil && viewModel.animateProgress ? .linear(duration: 1) : nil, value: shown)
-                        .frame(height: 24 * s)
-                        .contentShape(Rectangle())
-                        .gesture(
-                            DragGesture(minimumDistance: 0)
-                                .onChanged { value in
-                                    dragFraction = min(max(value.location.x / size, 0), 1)
-                                }
-                                .onEnded { value in
-                                    let f = min(max(value.location.x / size, 0), 1)
-                                    viewModel.seek(toFraction: f)
-                                    dragFraction = nil
-                                }
-                        )
+                    // Times + progress bar (click or drag to seek)
+                    VStack(spacing: 10 * s) {
+                        HStack {
+                            Text(formatTime(dragFraction.map { $0 * viewModel.duration } ?? viewModel.position))
+                            Spacer()
+                            Text(formatTime(shownDuration))
+                        }
+                        .font(.system(size: 13 * s, weight: .medium).monospacedDigit())
+                        .foregroundStyle(.white.opacity(0.7))
+                        .frame(width: size)
+                        .opacity(textOpacity)
+                        
+                        SeekBar(fraction: shown, height: 5 * s)
+                            .frame(width: size, height: 5 * s)
+                            .animation(dragFraction == nil && viewModel.animateProgress ? .linear(duration: 1) : nil, value: shown)
+                            .frame(height: 24 * s)
+                            .contentShape(Rectangle())
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { value in
+                                        dragFraction = min(max(value.location.x / size, 0), 1)
+                                    }
+                                    .onEnded { value in
+                                        let f = min(max(value.location.x / size, 0), 1)
+                                        viewModel.seek(toFraction: f)
+                                        dragFraction = nil
+                                    }
+                            )
+                    }
+                    .padding(.top, 8 * s)
+                    .offset(y: slide)
+                    .animation(.easeInOut(duration: 0.3), value: activity.isActive)
                 }
-                .padding(.top, 8 * s)
-                .offset(y: slide)
-                .animation(.easeInOut(duration: 0.3), value: activity.isActive)
+                .opacity(detailsHidden ? 0 : 1)
+                .allowsHitTesting(!detailsHidden)
+                .animation(.easeInOut(duration: 0.3), value: detailsHidden)
                 
                 // Playback controls (fade out when idle)
                 HStack(spacing: 44 * s) {
@@ -441,50 +448,55 @@ struct NowPlayingScreen: View {
                 .allowsHitTesting(false)
                 
                 VStack(alignment: .leading, spacing: 14) {
-                    // Title and details, left aligned
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(shownTitle)
-                            .font(.system(size: 48, weight: .bold))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                        Text(shownArtist)
-                            .font(.system(size: 26, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.85))
-                        Text(shownAlbum)
-                            .font(.system(size: 18))
-                            .foregroundStyle(.white.opacity(0.6))
+                    Group { 
+                        // Title and details, left aligned
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(shownTitle)
+                                .font(.system(size: 48, weight: .bold))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                            Text(shownArtist)
+                                .font(.system(size: 26, weight: .medium))
+                                .foregroundStyle(.white.opacity(0.85))
+                            Text(shownAlbum)
+                                .font(.system(size: 18))
+                                .foregroundStyle(.white.opacity(0.6))
+                        }
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .opacity(textOpacity)
+                        
+                        // Full-width progress bar (click or drag to seek)
+                        SeekBar(fraction: shown, height: 6)
+                            .frame(width: barWidth, height: 6)
+                            .animation(dragFraction == nil && viewModel.animateProgress ? .linear(duration: 1) : nil, value: shown)
+                            .frame(height: 24)
+                            .contentShape(Rectangle())
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { value in
+                                        dragFraction = min(max(value.location.x / barWidth, 0), 1)
+                                    }
+                                    .onEnded { value in
+                                        let f = min(max(value.location.x / barWidth, 0), 1)
+                                        viewModel.seek(toFraction: f)
+                                        dragFraction = nil
+                                    }
+                            )
+                        
+                        // Times on opposite sides, under the bar
+                        HStack {
+                            Text(formatTime(dragFraction.map { $0 * viewModel.duration } ?? viewModel.position))
+                            Spacer()
+                            Text(formatTime(shownDuration))
+                        }
+                        .font(.system(size: 14, weight: .medium).monospacedDigit())
+                        .foregroundStyle(.white.opacity(0.7))
+                        .opacity(textOpacity)
                     }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .opacity(textOpacity)
-                    
-                    // Full-width progress bar (click or drag to seek)
-                    SeekBar(fraction: shown, height: 6)
-                        .frame(width: barWidth, height: 6)
-                        .animation(dragFraction == nil && viewModel.animateProgress ? .linear(duration: 1) : nil, value: shown)
-                        .frame(height: 24)
-                        .contentShape(Rectangle())
-                        .gesture(
-                            DragGesture(minimumDistance: 0)
-                                .onChanged { value in
-                                    dragFraction = min(max(value.location.x / barWidth, 0), 1)
-                                }
-                                .onEnded { value in
-                                    let f = min(max(value.location.x / barWidth, 0), 1)
-                                    viewModel.seek(toFraction: f)
-                                    dragFraction = nil
-                                }
-                        )
-                    
-                    // Times on opposite sides, under the bar
-                    HStack {
-                        Text(formatTime(dragFraction.map { $0 * viewModel.duration } ?? viewModel.position))
-                        Spacer()
-                        Text(formatTime(shownDuration))
-                    }
-                    .font(.system(size: 14, weight: .medium).monospacedDigit())
-                    .foregroundStyle(.white.opacity(0.7))
-                    .opacity(textOpacity)
+                    .opacity(detailsHidden ? 0 : 1)
+                    .allowsHitTesting(!detailsHidden)
+                    .animation(.easeInOut(duration: 0.3), value: detailsHidden)
                     
                     // Controls, bottom center
                     HStack(spacing: 56) {
