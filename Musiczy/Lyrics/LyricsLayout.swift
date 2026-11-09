@@ -11,6 +11,9 @@ enum LyricsDefault {
     static let maxWords = 8                       // the most words on one line that is still easy to read
     static let size: Double = 1.0                 // 1 = the normal lyric size
     static let sizeRange: ClosedRange<Double> = 0.6...1.4
+    static let tightRowRatio: CGFloat = 1.6
+    static let normalRowRatio: CGFloat = 2.6
+    static let wordsForNormalRows = 4
 }
 
 /// Splits lyric lines by the lyrics settings (words per line and size).
@@ -23,7 +26,24 @@ enum LyricsLayout {
         let screenWidth = NSScreen.main?.frame.width ?? 1440
         return max(screenWidth / 2 - 80, 300)
     }
+    
+    // MARK: - Row spacing
 
+    /// Row height as a multiple of the font size. Fewer words per line = tighter rows.
+    static func rowRatio(words: Int) -> CGFloat {
+        let full = LyricsDefault.wordsForNormalRows
+        guard full > 1 else { return LyricsDefault.normalRowRatio }
+        let t = CGFloat(min(max(words, 1), full) - 1) / CGFloat(full - 1)   // 0 at 1 word, 1 at 4+
+        return LyricsDefault.tightRowRatio
+            + (LyricsDefault.normalRowRatio - LyricsDefault.tightRowRatio) * t
+    }
+
+    /// Height of one lyric row. Follows the font size and words per line,
+    /// and never gets taller than the panel can hold.
+    static func rowHeight(fontSize: CGFloat, words: Int, rows: Int, panelHeight: CGFloat) -> CGFloat {
+        min(fontSize * rowRatio(words: words), panelHeight / CGFloat(rows))
+    }
+    
     /// How wide a piece of text is when drawn in the lyrics font.
     private static func textWidth(_ text: String, fontSize: CGFloat) -> CGFloat {
         let font = NSFont.systemFont(ofSize: fontSize, weight: .bold)

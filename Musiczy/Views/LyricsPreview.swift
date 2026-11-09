@@ -22,7 +22,7 @@ struct LyricsPreview: View {
             let inner = max(geo.size.width - sidePadding * 2, 120)
             // The player's lyrics column, shrunk to fit this box. Text is shrunk by the same amount.
             let font = LyricsLayout.baseFontSize * CGFloat(size) * inner / LyricsLayout.panelWidth
-            let row = font * 1.9
+            let row = font * LyricsLayout.rowRatio(words: words)
 
             VStack(spacing: 0) {
                 ForEach(Array(pieces.enumerated()), id: \.offset) { index, text in

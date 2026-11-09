@@ -560,11 +560,15 @@ struct NowPlayingScreen: View {
         // The Size slider in Settings: font and row height grow together.
         let rows = style == 2 ? 3 : 5
         let k = CGFloat(lyricsSize)
-        let rowHeight: CGFloat = k <= 1 ? 130 * k : min(130 * k, max(130, panelH / CGFloat(rows)))
+        let fontSize = LyricsLayout.baseFontSize * k
+        let rowHeight = LyricsLayout.rowHeight(fontSize: fontSize,
+                                               words: lyricsWords,
+                                               rows: rows,
+                                               panelHeight: panelH)
 
         return lyricsList(rows: rows,
                           rowHeight: rowHeight,
-                          fontSize: LyricsLayout.baseFontSize * k,
+                          fontSize: fontSize,
                           centered: style == 2)
             .frame(width: panelW, height: panelH)
             .scaleEffect(scale)
