@@ -106,7 +106,7 @@ There is no account, analytics or tracking.
 
 ## Roadmap
 
-- [ ] Add mode state: Option for 1 word per line mode
+- [x] Add mode state: Option for 1 word per line mode
 - [x] Add feature: Customization for ambient light: saturation and size
 - [x] Add feature: Customization for shine: length and speed
 - [x] Make the sweep and ambient light go around the notch
