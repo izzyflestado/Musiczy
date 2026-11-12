@@ -15,6 +15,7 @@
 		4302392230923091001B4AE0 /* StylePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4302392130923091001B4AE0 /* StylePreview.swift */; };
 		431CB6A6309C3D9000E48C38 /* BorderStreak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431CB6A5309C3D9000E48C38 /* BorderStreak.swift */; };
 		431CB6A8309C415500E48C38 /* ScreenOutline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431CB6A7309C415500E48C38 /* ScreenOutline.swift */; };
+		434AB3E130A610220063F060 /* Musiczy.icon in Resources */ = {isa = PBXBuildFile; fileRef = 434AB3E030A610220063F060 /* Musiczy.icon */; };
 		4375E016309CCD19006D0D57 /* ShineSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4375E015309CCD19006D0D57 /* ShineSettings.swift */; };
 		439BB90E3096BFF3002D875E /* GlowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90D3096BFF3002D875E /* GlowStore.swift */; };
 		439BB9103096C34A002D875E /* LockSongsGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439BB90F3096C34A002D875E /* LockSongsGate.swift */; };
@@ -63,6 +64,7 @@
 		4302392130923091001B4AE0 /* StylePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePreview.swift; sourceTree = "<group>"; };
 		431CB6A5309C3D9000E48C38 /* BorderStreak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderStreak.swift; sourceTree = "<group>"; };
 		431CB6A7309C415500E48C38 /* ScreenOutline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenOutline.swift; sourceTree = "<group>"; };
+		434AB3E030A610220063F060 /* Musiczy.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = Musiczy.icon; sourceTree = "<group>"; };
 		4375E015309CCD19006D0D57 /* ShineSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShineSettings.swift; sourceTree = "<group>"; };
 		439BB90D3096BFF3002D875E /* GlowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowStore.swift; sourceTree = "<group>"; };
 		439BB90F3096C34A002D875E /* LockSongsGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockSongsGate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				6DFDA2EC85D75E117758C477 /* Models */,
 				974B5B56D8FA42C6C5AA480D /* Players */,
 				981DF5C90FAA7A49D7351473 /* Views */,
+				434AB3E030A610220063F060 /* Musiczy.icon */,
 			);
 			path = Musiczy;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6840675AA08B039E98DEE788 /* Assets.xcassets in Resources */,
+				434AB3E130A610220063F060 /* Musiczy.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +372,7 @@
 		1A1E709CB2BB11E08581148F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Musiczy;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Musiczy/Musiczy.entitlements;
@@ -394,7 +398,7 @@
 		5734A96D791E504906A7DA6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Musiczy;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Musiczy/Musiczy.entitlements;
