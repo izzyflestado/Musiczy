@@ -160,6 +160,13 @@ struct NowPlayingScreen: View {
                         .opacity(bottomOn ? 1 : 0)
                         .allowsHitTesting(bottomOn)
                         .animation(.easeInOut(duration: 0.5), value: bottomOn)
+
+                    // Settings button, top right of the main screen (hides when idle)
+                    if coverNamespace == nil {
+                        settingsButton
+                            .frame(width: geo.size.width, height: geo.size.height,
+                                   alignment: .topTrailing)
+                    }
                 }
             }
             .ignoresSafeArea()
@@ -231,6 +238,27 @@ struct NowPlayingScreen: View {
         shownDuration = viewModel.duration
     }
     
+    // MARK: - Settings button (top right, fades when the mouse is idle)
+
+    private var settingsButton: some View {
+        Button { SettingsWindowController.shared.show() } label: {
+            Image(systemName: "gearshape.fill")
+                .contentTransition(.identity)
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(.white.opacity(0.9))
+                .frame(width: 46, height: 46)
+                .background(Circle().fill(.white.opacity(0.12)))
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .help("Settings")
+        .padding(.top, 44)        // clears the menu bar that slides down at the top
+        .padding(.trailing, 28)
+        .opacity(activity.isActive ? 1 : 0)
+        .allowsHitTesting(activity.isActive)
+        .animation(.easeInOut(duration: 0.3), value: activity.isActive)
+    }
+
     // MARK: - Buttons row (sits right above the art, fades when the mouse is idle)
     
     private func topButtons(scale: CGFloat, width: CGFloat) -> some View {

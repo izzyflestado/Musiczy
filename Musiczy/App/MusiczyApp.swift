@@ -34,9 +34,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct MusiczyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @AppStorage(SettingsKey.showMenuBarIcon) private var showMenuBarIcon = true
 
     var body: some Scene {
-        MenuBarExtra {
+        MenuBarExtra(isInserted: $showMenuBarIcon) {
             MenuBarView()
         } label: {
             Image("MenuBarIcon")

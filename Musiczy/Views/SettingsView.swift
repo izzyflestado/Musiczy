@@ -2,6 +2,11 @@ import SwiftUI
 import AppKit
 import UniformTypeIdentifiers
 
+extension SettingsKey {
+    /// Show or hide the menu bar icon.
+    static let showMenuBarIcon = "showMenuBarIcon"
+}
+
 struct SettingsView: View {
     @AppStorage(SettingsKey.replaceLockWallpaper) private var replaceWallpaper = false
     @AppStorage(SettingsKey.ambientShine) private var ambientShine = false
@@ -13,6 +18,7 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.lyricsWords) private var lyricsWords = LyricsDefault.words
     @AppStorage(SettingsKey.lyricsSize) private var lyricsSize = LyricsDefault.size
     @AppStorage(SettingsKey.hideDetails) private var hideDetails = false
+    @AppStorage(SettingsKey.showMenuBarIcon) private var showMenuBarIcon = true
     @ObservedObject private var adPlayer = AdAudioPlayer.shared
     @State private var pickingFiles = false
 
@@ -25,6 +31,7 @@ struct SettingsView: View {
         Form {
             Section("Display style") {
                 DisplayStylePicker()
+                Toggle("Show menu bar icon", isOn: $showMenuBarIcon)
             }
 
             Section("Details") {
